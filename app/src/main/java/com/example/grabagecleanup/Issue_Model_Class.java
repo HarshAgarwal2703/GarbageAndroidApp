@@ -3,7 +3,7 @@ package com.example.grabagecleanup;
 import android.graphics.Bitmap;
 import android.location.Location;
 
-public class Model {
+public class Issue_Model_Class {
 
     private int id;
     private String Latitude;
@@ -11,7 +11,12 @@ public class Model {
     private double rating;
     private int img;
 
-    public Model(int id, String Latitude,String Longitude, double rating, int img) {
+    public Issue_Model_Class()
+    {
+
+    }
+
+    public Issue_Model_Class(int id, String Latitude, String Longitude, double rating, int img) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;

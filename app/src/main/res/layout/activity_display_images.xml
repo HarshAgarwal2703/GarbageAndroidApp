@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-        <LinearLayout
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="vertical"
-            android:id="@+id/Linear">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="LOCATION"
-                android:textSize="20sp"
-                android:id="@+id/LatitudeText"
-                android:layout_above="@+id/LongitudeText"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="LOCATION"
-                android:textSize="20sp"
-                android:id="@+id/LongitudeText"/>
+    android:orientation="vertical">
 
-        </LinearLayout>
     <ImageView
         android:id="@+id/Display_Image"
         android:layout_width="match_parent"
@@ -36,12 +14,45 @@
         android:layout_marginBottom="10dp"
         android:scaleType="fitXY" />
 
+    <LinearLayout
+        android:id="@+id/Linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/LatitudeText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_above="@+id/LongitudeText"
+            android:text="LOCATION"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/LongitudeText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="LOCATION"
+            android:textSize="20sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:id="@+id/SaveInGalleryButton"
+            />
+
+
+    </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="30dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30dp" />
 
 </RelativeLayout>

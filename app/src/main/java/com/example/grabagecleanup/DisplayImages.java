@@ -3,6 +3,7 @@ package com.example.grabagecleanup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +46,8 @@ public class DisplayImages extends AppCompatActivity {
     TextView LatitudeText;
     TextView LongitudeText;
     FloatingActionButton FAB_SEND_ISSUE;
-    String JSON_URL="http://bhavya17ahir.pythonanywhere.com/postAPI/";
+    Button SavePostInGalleryButton;
+    SharedPreferences sharedPreferences;
     int numRequests = 0;
 
     @Override
@@ -57,10 +60,11 @@ public class DisplayImages extends AppCompatActivity {
         LatitudeText=findViewById(R.id.LatitudeText);
         LongitudeText=findViewById(R.id.LongitudeText);
         FAB_SEND_ISSUE=findViewById(R.id.floatingActionButton);
+        SavePostInGalleryButton=findViewById(R.id.SaveInGalleryButton);
 
 
 
-
+        sharedPreferences=getPreferences(MODE_PRIVATE);
         String filePath=getIntent().getStringExtra("path");
         final String latitude=getIntent().getStringExtra("Latitude");
         final String longitude=getIntent().getStringExtra("Longitude");
@@ -112,7 +116,7 @@ public class DisplayImages extends AppCompatActivity {
                 //FAB_SEND_ISSUE.setVisibility(View.GONE);
                 Log.d("DGFHdfh", jsonObject.toString());
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, JSON_URL,jsonObject,
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.POST_IMAGES_URL,jsonObject,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -134,9 +138,17 @@ public class DisplayImages extends AppCompatActivity {
                 jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 MySingleton.getInstance(DisplayImages.this).addToRequest(jsonObjectRequest);
 
+                finish();
 
             }
 
+        });
+
+        SavePostInGalleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
 
