@@ -7,4 +7,6 @@ public class AppConstants {
     public static final int CAMERA_REQUEST_CODE = 1002 ;
     public static final int RequestPermissionCode = 1003 ;
 
+    public static final String POST_IMAGES_URL="http://bhavya17ahir.pythonanywhere.com/postAPI/";
+
 }
