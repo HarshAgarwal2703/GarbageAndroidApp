@@ -46,6 +46,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
+
     Camera camera;
     FloatingActionButton FAB_click_photo;
 
