@@ -1,4 +1,4 @@
-package com.example.grabagecleanup;
+package com.example.garbagecleanup;
 
 public class AppConstants {
 

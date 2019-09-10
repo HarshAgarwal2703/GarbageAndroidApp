@@ -1,4 +1,4 @@
-package com.example.grabagecleanup;
+package com.example.garbagecleanup;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +33,7 @@ public class TAB_1 extends Fragment {
     RecyclerView recyclerView;
     PageAdapter pageAdapter;
     List<Issue_Model_Class> IssueList;
-
+    ImageButton filterButton;
 
     public static TAB_1 newInstance()
     {
@@ -51,7 +52,7 @@ public class TAB_1 extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        filterButton=view.findViewById(R.id.FilterButton);
         pageAdapter = new PageAdapter(getContext(), IssueList);
         recyclerView.setAdapter(pageAdapter);
 
@@ -65,6 +66,11 @@ public class TAB_1 extends Fragment {
             }
         });
 
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         return view;
     }
 

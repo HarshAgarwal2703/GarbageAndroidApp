@@ -1,9 +1,8 @@
-package com.example.grabagecleanup;
+package com.example.garbagecleanup;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.location.LocationManager;
 import android.util.Log;
