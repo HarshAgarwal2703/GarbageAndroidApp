@@ -143,7 +143,7 @@ public class DisplayImages extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                saveToDB();
+                //saveToDB();
 
             }
         });
@@ -158,19 +158,19 @@ public class DisplayImages extends AppCompatActivity {
 
 
     }
-    private void saveToDB(){
-        byte[] ImageBytes = BitmapToByte(bitmap);
-        SQLiteDatabase database = new SampleSQLiteDBHelper(DisplayImages.this).getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(SampleSQLiteDBHelper.IMAGE,ImageBytes);
-        values.put(SampleSQLiteDBHelper.DATE, System.currentTimeMillis());
-        values.put(SampleSQLiteDBHelper.LATITUDE, latitude);
-        values.put(SampleSQLiteDBHelper.LONGITUDE, longitude);
-
-        long newRowId = database.insert(SampleSQLiteDBHelper.DATABASE_NAME, null, values);
-
-        Toast.makeText(DisplayImages.this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
-    }
+//    private void saveToDB(){
+//        byte[] ImageBytes = BitmapToByte(bitmap);
+//        SQLiteDatabase database = new SampleSQLiteDBHelper(DisplayImages.this).getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(SampleSQLiteDBHelper.IMAGE,ImageBytes);
+//        values.put(SampleSQLiteDBHelper.DATE, System.currentTimeMillis());
+//        values.put(SampleSQLiteDBHelper.LATITUDE, latitude);
+//        values.put(SampleSQLiteDBHelper.LONGITUDE, longitude);
+//
+//        long newRowId = database.insert(SampleSQLiteDBHelper.DATABASE_NAME, null, values);
+//
+//        Toast.makeText(DisplayImages.this, "The new Row Id is " + newRowId, Toast.LENGTH_LONG).show();
+//    }
 
     private Bitmap rotateBitmap(Bitmap bitmap) {
         int h = bitmap.getHeight();
