@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.LoginActivity;
+import com.example.garbagecleanup.activity.ViewDrafts;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class TAB_3 extends Fragment {
 
     Button VIEW_ISSUE;
     private Button btnLogOut;
+    Button View_drafts;
     ArrayList ISSUELIST = new ArrayList<>();
 
     public static TAB_3 newInstance() {
@@ -37,7 +39,7 @@ public class TAB_3 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_tab_3, container, false);
-        VIEW_ISSUE = view.findViewById(R.id.VIEW_BUTTON);
+        View_drafts = view.findViewById(R.id.VIEW_BUTTON);
         btnLogOut = view.findViewById(R.id.btnLogOut);
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,10 +53,12 @@ public class TAB_3 extends Fragment {
             }
         });
 
-        VIEW_ISSUE.setOnClickListener(new View.OnClickListener() {
+        View_drafts.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//                readFromDB();
+            public void onClick(View v) {
+
+                startActivity(ViewDrafts.makeIntent(getContext()));
+
             }
         });
         return view;

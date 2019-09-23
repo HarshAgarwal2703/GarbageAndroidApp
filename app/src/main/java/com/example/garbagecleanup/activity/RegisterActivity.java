@@ -13,14 +13,14 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.model.RegisterUser;
 import com.example.garbagecleanup.model.User;
-import com.example.grabagecleanup.model.RegisterUser;
 import com.google.gson.Gson;
 
 import org.json.JSONException;

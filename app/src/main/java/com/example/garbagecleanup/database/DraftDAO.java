@@ -16,11 +16,12 @@ import androidx.room.Query;
  */
 @Dao
 public interface DraftDAO {
+
     @Query("SELECT * FROM DraftTable")
     List<Draft> getAll();
 
     @Query("SELECT * FROM DraftTable WHERE user_id = :userId")
-    List<Draft> getAllCurrentUserDrafts(int[] userId);
+    List<Draft> getAllCurrentUserDrafts(int userId);
 
     @Insert
     void insert(Draft draft);

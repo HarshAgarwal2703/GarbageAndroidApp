@@ -6,6 +6,8 @@
     <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:text="View Drafts"
+      android:textAllCaps="false"
       android:id="@+id/VIEW_BUTTON" />
 
     <Button

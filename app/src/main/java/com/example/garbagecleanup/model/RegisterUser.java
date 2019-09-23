@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.model;
+package com.example.garbagecleanup.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

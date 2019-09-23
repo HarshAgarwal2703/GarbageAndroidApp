@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.TabLayout);
         tabLayout.setupWithViewPager(viewPager);
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
