@@ -33,7 +33,7 @@ public class ViewDrafts extends AppCompatActivity {
 //        draftList = MySingleton.getInstance(this).getAppDatabase().draftDAO().getAll();
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(this,500);
         recyclerView.setLayoutManager(layoutManager);
 
         draftList=new ArrayList<>();
@@ -41,7 +41,7 @@ public class ViewDrafts extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         for(int i=0;i<5;i++)
         {
-            Draft draft=new Draft(1,"djsjh","sdfmksdf","656565","dsfdf","jjbbk",new byte[5]);
+            Draft draft=new Draft(1,"djsjh"+i,"sdfmksdf","656565","dsfdf","jjbbk",new byte[5]);
             draftList.add(draft);
             Log.i(TAG, "onCreate: "+draftList);
         }

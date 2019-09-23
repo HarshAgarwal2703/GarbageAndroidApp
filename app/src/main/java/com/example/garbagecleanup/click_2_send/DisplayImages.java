@@ -116,7 +116,7 @@ public class DisplayImages extends AppCompatActivity {
                             @Override
                             public void onResponse(String response) {
                                 Log.d("Response", response);
-                                Log.e(TAG, "onResponse: " + response.toString() );
+                                Log.e(TAG, "onResponse: " + response.toString());
 
                             }
                         }, new Response.ErrorListener() {

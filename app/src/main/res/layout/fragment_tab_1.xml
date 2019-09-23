@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@+id/SwipeRefresh"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/SwipeRefresh">
 
         <!--        <ImageButton-->
         <!--            android:id="@+id/FilterButton"-->
@@ -22,10 +22,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerTab1"
             android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          tools:listitem="@layout/issues_card_view" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/issues_card_view" />
 
 
-    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>
