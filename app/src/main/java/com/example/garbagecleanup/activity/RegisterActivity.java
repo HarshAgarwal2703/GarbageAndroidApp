@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.activity;
+package com.example.garbagecleanup.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +10,13 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.grabagecleanup.AppConstants;
-import com.example.grabagecleanup.MySingleton;
-import com.example.grabagecleanup.R;
-import com.example.grabagecleanup.model.RegisterUser;
-import com.example.grabagecleanup.model.User;
+import com.example.garbagecleanup.AppConstants;
+import com.example.garbagecleanup.MySingleton;
+import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.model.RegisterUser;
+import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -77,11 +76,10 @@ public class RegisterActivity extends AppCompatActivity {
                                                                                 },
                                                                                 new Response.ErrorListener() {
                                                                                     @Override
-                                                                                    public void onErrorResponse(VolleyError error) {
-
-                                                                                        Log.e("DGFHdfh", error.toString());
+                                                                                    public void onErrorResponse(com.android.volley.error.VolleyError error) {
 
                                                                                     }
+
                                                                                 }
                     );
 

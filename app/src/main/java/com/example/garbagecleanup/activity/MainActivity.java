@@ -7,7 +7,7 @@ import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.fragments.TAB_1;
 import com.example.garbagecleanup.fragments.TAB_2;
 import com.example.garbagecleanup.fragments.TAB_3;
-import com.example.grabagecleanup.activity.LoginActivity;
+import com.example.garbagecleanup.activity.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout=(TabLayout)findViewById(R.id.TabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
     }
 
 

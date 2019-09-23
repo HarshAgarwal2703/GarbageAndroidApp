@@ -1,6 +1,6 @@
 package com.example.garbagecleanup.database;
 
-import com.example.grabagecleanup.model.Draft;
+import com.example.garbagecleanup.model.Draft;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import androidx.room.Query;
  */
 @Dao
 public interface DraftDAO {
+
     @Query("SELECT * FROM DraftTable")
     List<Draft> getAll();
 

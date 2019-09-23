@@ -1,8 +1,10 @@
-package com.example.grabagecleanup.model;
+package com.example.garbagecleanup.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.util.Arrays;
 
 /**
  * User: Aman
@@ -75,6 +77,20 @@ public class Draft {
 
     public byte[] getImage() {
         return image;
+    }
+
+    @Override
+    public String toString() {
+        return "Draft{" +
+                "draft_id=" + draft_id +
+                ", userID=" + userID +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", image=" + Arrays.toString(image) +
+                '}';
     }
 }
 

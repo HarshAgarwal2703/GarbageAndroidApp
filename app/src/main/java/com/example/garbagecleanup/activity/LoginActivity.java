@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.activity;
+package com.example.garbagecleanup.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,13 +11,12 @@ import android.widget.EditText;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.grabagecleanup.AppConstants;
-import com.example.grabagecleanup.MySingleton;
-import com.example.grabagecleanup.R;
-import com.example.grabagecleanup.model.LoginUser;
-import com.example.grabagecleanup.model.User;
+import com.android.volley.request.JsonArrayRequest;
+import com.example.garbagecleanup.AppConstants;
+import com.example.garbagecleanup.MySingleton;
+import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.model.LoginUser;
+import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -78,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }, new Response.ErrorListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error) {
-
+                        public void onErrorResponse(com.android.volley.error.VolleyError error) {
                             Log.e("hbhb", error.toString());
 
                         }
+
                     });
                     jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

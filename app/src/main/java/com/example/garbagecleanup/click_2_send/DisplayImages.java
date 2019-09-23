@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
@@ -30,8 +32,10 @@ import org.json.JSONObject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class DisplayImages extends AppCompatActivity {
 
+    private static final String TAG = "DisplayImages";
     ImageView displayImage;
 
     TextView LatitudeText;
@@ -43,6 +47,7 @@ public class DisplayImages extends AppCompatActivity {
     Bitmap bitmap;
     String latitude;
     String longitude;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class DisplayImages extends AppCompatActivity {
 
 
         sharedPreferences = getPreferences(MODE_PRIVATE);
-        String filePath = getIntent().getStringExtra("path");
+        final String filePath = getIntent().getStringExtra("path");
         latitude = getIntent().getStringExtra("Latitude");
         longitude = getIntent().getStringExtra("Longitude");
         File file = new File(filePath);
@@ -74,16 +79,16 @@ public class DisplayImages extends AppCompatActivity {
 
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("displayImage", ImageToString(bitmap));
 //            jsonObject.put("Latitude",latitude);
 //            jsonObject.put("Longitude",longitude);
-            jsonObject.put("title", "Bhavya Mc KA BAcha");
+            //jsonObject.put("Image", file);
+            jsonObject.put("Title", "Bhavya Mc KA BAcha");
             jsonObject.put("Description", "7");
-            jsonObject.put("latitude", latitude);
-            jsonObject.put("longitude", longitude);
-            jsonObject.put("created_date", "2019-09-04T05:00:21.697870Z");
-            jsonObject.put("published_date", "2019-09-04T05:00:21.697870Z");
-            jsonObject.put("author", "7");
+            jsonObject.put("Latitude", latitude);
+            jsonObject.put("Longitude", longitude);
+            jsonObject.put("Created_date", "2019-09-04T05:00:21.697870Z");
+            jsonObject.put("Published_date", "2019-09-04T05:00:21.697870Z");
+            jsonObject.put("Author", "7");
 
 
         } catch (JSONException e) {
@@ -105,32 +110,38 @@ public class DisplayImages extends AppCompatActivity {
         FAB_SEND_ISSUE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //FAB_SEND_ISSUE.setVisibility(View.GONE);
-                Log.d("DGFHdfh", jsonObject.toString());
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.POST_IMAGES_URL, jsonObject,
-                                                                            new Response.Listener<JSONObject>() {
-                                                                                @Override
-                                                                                public void onResponse(JSONObject response) {
-                                                                                    Log.d("DGFHdfh", jsonObject.toString());
-                                                                                    Log.e("DGFHdfh", response.toString());
+                SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, AppConstants.POST_IMAGES_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("Response", response);
+                                Log.e(TAG, "onResponse: " + response.toString() );
 
-                                                                                }
-                                                                            },
-                                                                            new Response.ErrorListener() {
-                                                                                @Override
-                                                                                public void onErrorResponse(VolleyError error) {
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(com.android.volley.error.VolleyError error) {
 
-                                                                                    Log.e("DGFHdfh", error.toString());
+                        Log.e(TAG, "onErrorResponse: " + error.getMessage());
 
-                                                                                }
-                                                                            }
-                );
+                    }
+                });
 
-                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                MySingleton.getInstance(DisplayImages.this).addToRequest(jsonObjectRequest);
+                //smr.addFile("image", filePath);
+                //Log.i(TAG, "onClick: "+filePath);
+                smr.addStringParam("title", "Bhavya Mc KA BAcha");
+                smr.addStringParam("Description", "7");
+                smr.addStringParam("latitude", latitude);
+                smr.addStringParam("longitude", longitude);
+                smr.addStringParam("created_date", "2019-09-04T05:00:21.697870Z");
+                smr.addStringParam("published_date", "2019-09-04T05:00:21.697870Z");
+                smr.addStringParam("author", "7");
 
+                smr.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                MySingleton.getInstance(DisplayImages.this).addToRequest(smr);
                 finish();
+
 
             }
 
