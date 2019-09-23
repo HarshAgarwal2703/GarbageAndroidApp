@@ -1,6 +1,6 @@
 package com.example.garbagecleanup.database;
 
-import com.example.grabagecleanup.model.Draft;
+import com.example.garbagecleanup.model.Draft;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

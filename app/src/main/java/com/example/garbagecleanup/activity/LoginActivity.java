@@ -1,12 +1,15 @@
 package com.example.garbagecleanup.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,8 +19,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
-import com.example.grabagecleanup.model.LoginUser;
-import com.example.grabagecleanup.model.User;
+import com.example.garbagecleanup.model.LoginUser;
+import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -50,6 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TextUtils.isEmpty(etEmailID.getText())) {
+                    etEmailID.setError("Required");
+                    return;
+                }
+                if (TextUtils.isEmpty(etPassword.getText())) {
+                    etPassword.setError("Required");
+                    return;
+                }
                 LoginUser loginUser = new LoginUser();
                 loginUser.setEmailId(etEmailID.getText().toString());
                 loginUser.setPassword(etPassword.getText().toString());
@@ -63,15 +74,29 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(JSONArray response1) {
                             Log.i(TAG, "onResponse: " + response1.toString());
                             try {
-                                JSONObject response = response1.getJSONObject(0);
-                                User user = new User();
-                                user.setEmailId(response.getString("email_id"));
-                                user.setLastName(response.getString("last_name"));
-                                user.setFirstName(response.getString("first_name"));
-                                user.setPhoneNumber(response.getInt("phone_number"));
-                                user.setUserId(response.getInt("id"));
 
-                                SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                JSONObject response = (JSONObject) response1.get(0);
+                                if (!response.getBoolean("error")) {
+                                    String message = response.getString("message");
+                                    User user = new User();
+                                    JSONObject userObj = response.getJSONObject("user");
+                                    user.setEmailId(userObj.getString("email_id"));
+                                    user.setLastName(userObj.getString("last_name"));
+                                    user.setFirstName(userObj.getString("first_name"));
+                                    user.setPhoneNumber(userObj.getInt("phone_number"));
+                                    user.setUserId(userObj.getInt("id"));
+
+                                    SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                    sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
+                                    sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
+                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                                    startActivity(MainActivity.makeIntent(LoginActivity.this));
+                                    finish();
+                                } else {
+                                    String message = response.getString("message");
+                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -80,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
-                            Log.e("hbhb", error.toString());
+                            Log.e(TAG, "onErrorResponse: " + error.toString());
 
                         }
                     });
@@ -88,29 +113,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     MySingleton.getInstance(LoginActivity.this).addToRequest(jsonArrayRequest);
 
-//                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.LOGIN_USER, jsonObject,
-//                                                                                new Response.Listener<JSONObject>() {
-//                                                                                    @Override
-//                                                                                    public void onResponse(JSONObject response) {
-//                                                                                        Log.e("response: ", response.toString());
-//
-//                                                                                    }
-//                                                                                },
-//                                                                                new Response.ErrorListener() {
-//                                                                                    @Override
-//                                                                                    public void onErrorResponse(VolleyError error) {
-//
-//                                                                                        Log.e("DGFHdfh", error.toString());
-//
-//                                                                                    }
-//                                                                                }
-//                    );
-//
-//                    jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
     }
 }

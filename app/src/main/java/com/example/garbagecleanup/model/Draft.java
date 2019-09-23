@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.model;
+package com.example.garbagecleanup.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

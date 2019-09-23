@@ -2,6 +2,8 @@ package com.example.garbagecleanup;
 
 public class AppConstants {
     public static final String SHARED_PREFERENCES_NAME = "Garbage";
+    public static final String SP_GET_USER = "user";
+    public static final String SP_LOGGED_IN = "logged_in";
     public static final int LOCATION_REQUEST = 1000;
     public static final int GPS_REQUEST = 1001;
     public static final int CAMERA_REQUEST_CODE = 1002 ;

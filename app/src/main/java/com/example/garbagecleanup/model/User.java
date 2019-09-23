@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.model;
+package com.example.garbagecleanup.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -63,6 +63,14 @@ public class User {
         return phoneNumber;
     }
 
-    //    private String firstName;
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailId='" + emailId + '\'' +
+                ", userId=" + userId +
+                ", phoneNumber=" + phoneNumber +
+                '}';
+    }
 }

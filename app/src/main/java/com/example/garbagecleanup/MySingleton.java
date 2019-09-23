@@ -1,6 +1,7 @@
 package com.example.garbagecleanup;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +16,7 @@ public class MySingleton {
     private RequestQueue requestQueue;
     private static Context context;
     private AppDatabase appDatabase;
+    private SharedPreferences sharedPreferences;
 
     public MySingleton(Context context)
     {
@@ -24,6 +26,7 @@ public class MySingleton {
         this.appDatabase = db;
         this.context=context;
         this.requestQueue=getRequestQueue();
+        this.sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     public AppDatabase getAppDatabase() {

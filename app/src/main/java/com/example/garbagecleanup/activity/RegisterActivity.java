@@ -1,10 +1,13 @@
 package com.example.garbagecleanup.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,8 +19,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.model.User;
 import com.example.grabagecleanup.model.RegisterUser;
-import com.example.grabagecleanup.model.User;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -33,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Gson gson = new Gson();
 
     private static final String TAG = "RegisterActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,6 +52,26 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TextUtils.isEmpty(etFirstName.getText())) {
+                    etFirstName.setError("Required");
+                    return;
+                }
+                if (TextUtils.isEmpty(etLastName.getText())) {
+                    etLastName.setError("Required");
+                    return;
+                }
+                if (TextUtils.isEmpty(etEmailID.getText())) {
+                    etEmailID.setError("Required");
+                    return;
+                }
+                if (TextUtils.isEmpty(etContactNumber.getText())) {
+                    etContactNumber.setError("Required");
+                    return;
+                }
+                if (TextUtils.isEmpty(etPassword.getText())) {
+                    etPassword.setError("Required");
+                    return;
+                }
                 RegisterUser registerUser = new RegisterUser();
                 registerUser.setFirstName(etFirstName.getText().toString());
                 registerUser.setLastName(etLastName.getText().toString());
@@ -62,13 +86,47 @@ public class RegisterActivity extends AppCompatActivity {
                                                                                 new Response.Listener<JSONObject>() {
                                                                                     @Override
                                                                                     public void onResponse(JSONObject response) {
-                                                                                        User user = new User();
+                                                                                        Log.i(TAG, "onResponse: " + response);
                                                                                         try {
-                                                                                            user.setEmailId(response.getString("email_id"));
-                                                                                            user.setLastName(response.getString("last_name"));
-                                                                                            user.setFirstName(response.getString("first_name"));
-                                                                                            user.setPhoneNumber(response.getInt("phone_number"));
-                                                                                            user.setUserId(response.getInt("id"));
+//                                        if (!response.getBoolean("error")) {
+//                                            String message = response.getString("message");
+//                                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+//                                            User user = new User();
+//                                            user.setEmailId(response.getString("email_id"));
+//                                            user.setLastName(response.getString("last_name"));
+//                                            user.setFirstName(response.getString("first_name"));
+//                                            user.setPhoneNumber(response.getInt("phone_number"));
+//                                            user.setUserId(response.getInt("id"));
+//
+//                                            SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+//                                            sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
+//                                            sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
+//                                            startActivity(MainActivity.makeIntent(RegisterActivity.this));
+//                                            finishAffinity();
+//                                        } else {
+//                                            String message = response.getString("message");
+//                                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+//                                        }
+                                                                                            if (!response.getBoolean("error")) {
+                                                                                                String message = response.getString("message");
+                                                                                                User user = new User();
+                                                                                                JSONObject userObj = response.getJSONObject("user");
+                                                                                                user.setEmailId(userObj.getString("email_id"));
+                                                                                                user.setLastName(userObj.getString("last_name"));
+                                                                                                user.setFirstName(userObj.getString("first_name"));
+                                                                                                user.setPhoneNumber(userObj.getInt("phone_number"));
+                                                                                                user.setUserId(userObj.getInt("id"));
+
+                                                                                                SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                                                                                sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
+                                                                                                sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
+                                                                                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                                                                startActivity(MainActivity.makeIntent(RegisterActivity.this));
+                                                                                                finishAffinity();
+                                                                                            } else {
+                                                                                                String message = response.getString("message");
+                                                                                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                                                            }
                                                                                         } catch (JSONException e) {
                                                                                             e.printStackTrace();
                                                                                         }
@@ -79,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                                                     @Override
                                                                                     public void onErrorResponse(VolleyError error) {
 
-                                                                                        Log.e("DGFHdfh", error.toString());
+                                                                                        Log.e(TAG, "onErrorResponse: " + error);
 
                                                                                     }
                                                                                 }
