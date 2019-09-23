@@ -1,9 +1,11 @@
 package com.example.garbagecleanup.click_2_send;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.model.Draft;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
@@ -35,32 +38,35 @@ public class DisplayImages extends AppCompatActivity {
     ImageView displayImage;
 
     TextView LatitudeText;
-    TextView LongitudeText;
+    TextView LongitudeText, titleEditText, descriptionEditText;
     FloatingActionButton FAB_SEND_ISSUE;
     Button SavePostInGalleryButton;
     SharedPreferences sharedPreferences;
     int numRequests = 0;
     Bitmap bitmap;
-    String latitude;
-    String longitude;
+    //    String latitude;
+//    String longitude;
+    private String title, description, latitude, longitude, timestamp;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_images);
 
-
         displayImage = findViewById(R.id.Display_Image);
         LatitudeText = findViewById(R.id.LatitudeText);
         LongitudeText = findViewById(R.id.LongitudeText);
         FAB_SEND_ISSUE = findViewById(R.id.floatingActionButton);
         SavePostInGalleryButton = findViewById(R.id.SaveInGalleryButton);
-
+        titleEditText = findViewById(R.id.TitleEditText);
+        descriptionEditText = findViewById(R.id.DescriptionEditText);
 
         sharedPreferences = getPreferences(MODE_PRIVATE);
         String filePath = getIntent().getStringExtra("path");
         latitude = getIntent().getStringExtra("Latitude");
         longitude = getIntent().getStringExtra("Longitude");
+        timestamp = getIntent().getStringExtra("timestamp");
+
         File file = new File(filePath);
         bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
@@ -85,7 +91,6 @@ public class DisplayImages extends AppCompatActivity {
             jsonObject.put("published_date", "2019-09-04T05:00:21.697870Z");
             jsonObject.put("author", "7");
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,10 +102,8 @@ public class DisplayImages extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         Log.d("DGFHdfh", jsonObject.toString());
         Log.e("DGFHdfh", jsonObject.toString());
-
 
         FAB_SEND_ISSUE.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,17 +142,18 @@ public class DisplayImages extends AppCompatActivity {
         SavePostInGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                Draft draft = new Draft(
-//                        1,
-//                        title,
-//                        description,
-//                        latitude,
-//                        longitude,
-//                        timestamp,
-//                        BitmapToByte(bitmap)
-//                );
-//                MySingleton.getInstance(DisplayImages.this).getAppDatabase().draftDAO().insert(draft);
+                title = titleEditText.getText().toString();
+                description = descriptionEditText.getText().toString();
+                Draft draft = new Draft(
+                        1,
+                        title,
+                        description,
+                        latitude,
+                        longitude,
+                        timestamp,
+                        BitmapToByte(bitmap)
+                );
+                new InsertDraft(DisplayImages.this).execute(draft);
 
             }
         });
@@ -180,5 +184,19 @@ public class DisplayImages extends AppCompatActivity {
         bitmap.recycle();
 
         return byteArray;
+    }
+
+    private static class InsertDraft extends AsyncTask<Draft, Void, Void> {
+        private Context context;
+
+        @Override
+        protected Void doInBackground(Draft... drafts) {
+            MySingleton.getInstance(context).getAppDatabase().draftDAO().insert(drafts[0]);
+            return null;
+        }
+
+        public InsertDraft(Context context) {
+            this.context = context;
+        }
     }
 }

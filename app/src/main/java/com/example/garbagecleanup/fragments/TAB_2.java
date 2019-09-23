@@ -117,6 +117,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
+                intent.putExtra("timestamp", System.currentTimeMillis());
 
                 startActivity(intent);
                 camera.release();
