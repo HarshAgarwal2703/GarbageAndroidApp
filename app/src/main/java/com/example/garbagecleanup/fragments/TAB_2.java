@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.click_2_send;
+package com.example.garbagecleanup.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,9 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.grabagecleanup.AppConstants;
-import com.example.grabagecleanup.GpsUtils;
-import com.example.grabagecleanup.R;
+import com.example.garbagecleanup.AppConstants;
+import com.example.garbagecleanup.GpsUtils;
+import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.click_2_send.DisplayImages;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,7 +43,6 @@ import androidx.fragment.app.Fragment;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
 
 
     Camera camera;
@@ -117,7 +117,6 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
-                intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
 
                 startActivity(intent);
                 camera.release();
@@ -206,8 +205,8 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         }
     }
 
-    public void onStart()
-    {
+    @SuppressLint("RestrictedApi")
+    public void onStart() {
         super.onStart();
 
         new GpsUtils(getContext()).turnGPSOn(new GpsUtils.onGpsListener() {
@@ -216,11 +215,9 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                 // turn on GPS
                 isGPS = isGPSEnable;
                 googleApiClient.connect();
-                
 
             }
         });
-
 
         FAB_click_photo.setVisibility(View.VISIBLE);
 
@@ -232,6 +229,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         googleApiClient.disconnect();
       super.onStop();
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
        if(ActivityCompat.checkSelfPermission(getContext(),ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

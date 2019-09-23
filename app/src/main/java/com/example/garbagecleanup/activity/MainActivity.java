@@ -1,10 +1,13 @@
-package com.example.grabagecleanup;
+package com.example.garbagecleanup.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.fragments.TAB_1;
+import com.example.garbagecleanup.fragments.TAB_2;
+import com.example.garbagecleanup.fragments.TAB_3;
 import com.example.grabagecleanup.activity.LoginActivity;
-import com.example.grabagecleanup.click_2_send.TAB_2;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;

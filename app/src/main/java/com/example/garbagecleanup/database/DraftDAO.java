@@ -1,4 +1,4 @@
-package com.example.grabagecleanup;
+package com.example.garbagecleanup.database;
 
 import com.example.grabagecleanup.model.Draft;
 

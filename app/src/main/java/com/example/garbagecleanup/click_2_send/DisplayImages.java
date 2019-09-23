@@ -1,10 +1,11 @@
-package com.example.grabagecleanup.click_2_send;
+package com.example.garbagecleanup.click_2_send;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,9 +17,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.grabagecleanup.AppConstants;
-import com.example.grabagecleanup.MySingleton;
-import com.example.grabagecleanup.R;
+import com.example.garbagecleanup.AppConstants;
+import com.example.garbagecleanup.MySingleton;
+import com.example.garbagecleanup.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
@@ -39,11 +40,15 @@ public class DisplayImages extends AppCompatActivity {
     Button SavePostInGalleryButton;
     SharedPreferences sharedPreferences;
     int numRequests = 0;
+    Bitmap bitmap;
+    String latitude;
+    String longitude;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_images);
+
 
         displayImage = findViewById(R.id.Display_Image);
         LatitudeText = findViewById(R.id.LatitudeText);
@@ -51,13 +56,13 @@ public class DisplayImages extends AppCompatActivity {
         FAB_SEND_ISSUE = findViewById(R.id.floatingActionButton);
         SavePostInGalleryButton = findViewById(R.id.SaveInGalleryButton);
 
+
         sharedPreferences = getPreferences(MODE_PRIVATE);
         String filePath = getIntent().getStringExtra("path");
-        final String latitude = getIntent().getStringExtra("Latitude");
-        final String longitude = getIntent().getStringExtra("Longitude");
-        final String timestamp = getIntent().getStringExtra("timestamp");
+        latitude = getIntent().getStringExtra("Latitude");
+        longitude = getIntent().getStringExtra("Longitude");
         File file = new File(filePath);
-        final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
         Bitmap bmp = rotateBitmap(bitmap);
         displayImage.setImageBitmap(bmp);
@@ -69,7 +74,7 @@ public class DisplayImages extends AppCompatActivity {
 
         final JSONObject jsonObject = new JSONObject();
         try {
-//            jsonObject.put("displayImage", ImageToString(bitmap));
+            jsonObject.put("displayImage", ImageToString(bitmap));
 //            jsonObject.put("Latitude",latitude);
 //            jsonObject.put("Longitude",longitude);
             jsonObject.put("title", "Bhavya Mc KA BAcha");
@@ -79,6 +84,7 @@ public class DisplayImages extends AppCompatActivity {
             jsonObject.put("created_date", "2019-09-04T05:00:21.697870Z");
             jsonObject.put("published_date", "2019-09-04T05:00:21.697870Z");
             jsonObject.put("author", "7");
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -91,8 +97,10 @@ public class DisplayImages extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         Log.d("DGFHdfh", jsonObject.toString());
         Log.e("DGFHdfh", jsonObject.toString());
+
 
         FAB_SEND_ISSUE.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,16 +139,18 @@ public class DisplayImages extends AppCompatActivity {
         SavePostInGalleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Draft draft=new Draft(
+
+//                Draft draft = new Draft(
 //                        1,
 //                        title,
 //                        description,
 //                        latitude,
 //                        longitude,
 //                        timestamp,
-//                        ImageToByteArray(bitmap)
+//                        BitmapToByte(bitmap)
 //                );
 //                MySingleton.getInstance(DisplayImages.this).getAppDatabase().draftDAO().insert(draft);
+
             }
         });
 
@@ -156,10 +166,19 @@ public class DisplayImages extends AppCompatActivity {
         return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
     }
 
-    private byte[] ImageToByteArray(Bitmap bitmap) {
+    private String ImageToString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
+        byte[] imgBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
     }
 
+    private byte[] BitmapToByte(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bitmap.recycle();
+
+        return byteArray;
+    }
 }
