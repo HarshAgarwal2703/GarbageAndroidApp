@@ -6,17 +6,27 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import androidx.room.Room;
+
 public class MySingleton {
 
     private static MySingleton mySingleton;
     private RequestQueue requestQueue;
     private static Context context;
+    private AppDatabase appDatabase;
 
-
-    private MySingleton(Context context)
+    public MySingleton(Context context)
     {
+        AppDatabase db = Room.databaseBuilder(context,
+                                              AppDatabase.class, "database-name"
+        ).build();
+        this.appDatabase = db;
         this.context=context;
         this.requestQueue=getRequestQueue();
+    }
+
+    public AppDatabase getAppDatabase() {
+        return appDatabase;
     }
 
     private RequestQueue getRequestQueue() {
@@ -26,7 +36,7 @@ public class MySingleton {
     return requestQueue;
     }
 
-    protected static synchronized  MySingleton getInstance(Context context)
+    public static synchronized MySingleton getInstance(Context context)
     {
         if(mySingleton==null){
             mySingleton=new MySingleton(context);
@@ -39,4 +49,5 @@ public class MySingleton {
     {
         getRequestQueue().add(request);
     }
+
 }

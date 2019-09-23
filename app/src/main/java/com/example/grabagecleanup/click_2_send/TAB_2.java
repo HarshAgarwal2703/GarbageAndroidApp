@@ -1,4 +1,4 @@
-package com.example.grabagecleanup;
+package com.example.grabagecleanup.click_2_send;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,29 +19,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import com.example.grabagecleanup.AppConstants;
+import com.example.grabagecleanup.GpsUtils;
+import com.example.grabagecleanup.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -80,7 +78,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
         if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA} ,AppConstants.CAMERA_REQUEST_CODE);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_REQUEST_CODE);
         }
         else {
             surfaceHolder.addCallback(this);
@@ -112,13 +110,14 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         pictureCallback= new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
-                final Intent intent = new Intent(getActivity(),DisplayImages.class);
+                final Intent intent = new Intent(getActivity(), DisplayImages.class);
 
                 Bitmap bmp=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 String filePath= tempFileImage(getContext(), bmp,"image");
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
+                intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
 
                 startActivity(intent);
                 camera.release();
