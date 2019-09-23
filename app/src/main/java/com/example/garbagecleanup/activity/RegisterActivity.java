@@ -82,66 +82,51 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.i(TAG, "onClick: " + json);
                 try {
                     final JSONObject object = new JSONObject(json);
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.REGISTER_USER, object,
-                                                                                new Response.Listener<JSONObject>() {
-                                                                                    @Override
-                                                                                    public void onResponse(JSONObject response) {
-                                                                                        Log.i(TAG, "onResponse: " + response);
-                                                                                        try {
-//                                        if (!response.getBoolean("error")) {
-//                                            String message = response.getString("message");
-//                                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-//                                            User user = new User();
-//                                            user.setEmailId(response.getString("email_id"));
-//                                            user.setLastName(response.getString("last_name"));
-//                                            user.setFirstName(response.getString("first_name"));
-//                                            user.setPhoneNumber(response.getInt("phone_number"));
-//                                            user.setUserId(response.getInt("id"));
-//
-//                                            SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-//                                            sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
-//                                            sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
-//                                            startActivity(MainActivity.makeIntent(RegisterActivity.this));
-//                                            finishAffinity();
-//                                        } else {
-//                                            String message = response.getString("message");
-//                                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-//                                        }
-                                                                                            if (!response.getBoolean("error")) {
-                                                                                                String message = response.getString("message");
-                                                                                                User user = new User();
-                                                                                                JSONObject userObj = response.getJSONObject("user");
-                                                                                                user.setEmailId(userObj.getString("email_id"));
-                                                                                                user.setLastName(userObj.getString("last_name"));
-                                                                                                user.setFirstName(userObj.getString("first_name"));
-                                                                                                user.setPhoneNumber(userObj.getInt("phone_number"));
-                                                                                                user.setUserId(userObj.getInt("id"));
+                    JsonObjectRequest jsonObjectRequest =
+                            new JsonObjectRequest(
+                                    Request.Method.POST,
+                                    AppConstants.REGISTER_USER,
+                                    object,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            Log.i(TAG, "onResponse: " + response);
+                                            try {
+                                                if (!response.getBoolean("error")) {
+                                                    String message = response.getString("message");
+                                                    User user = new User();
+                                                    JSONObject userObj = response.getJSONObject("user");
+                                                    user.setEmailId(userObj.getString("email_id"));
+                                                    user.setLastName(userObj.getString("last_name"));
+                                                    user.setFirstName(userObj.getString("first_name"));
+                                                    user.setPhoneNumber(userObj.getInt("phone_number"));
+                                                    user.setUserId(userObj.getInt("id"));
 
-                                                                                                SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                                                                                                sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
-                                                                                                sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
-                                                                                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                                                                                                startActivity(MainActivity.makeIntent(RegisterActivity.this));
-                                                                                                finishAffinity();
-                                                                                            } else {
-                                                                                                String message = response.getString("message");
-                                                                                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                                                                                            }
-                                                                                        } catch (JSONException e) {
-                                                                                            e.printStackTrace();
-                                                                                        }
+                                                    SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                                    sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
+                                                    sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
+                                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                    startActivity(MainActivity.makeIntent(RegisterActivity.this));
+                                                    finishAffinity();
+                                                } else {
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
 
-                                                                                    }
-                                                                                },
-                                                                                new Response.ErrorListener() {
-                                                                                    @Override
-                                                                                    public void onErrorResponse(VolleyError error) {
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
 
-                                                                                        Log.e(TAG, "onErrorResponse: " + error);
+                                            Log.e(TAG, "onErrorResponse: " + error);
 
-                                                                                    }
-                                                                                }
-                    );
+                                        }
+                                    }
+                            );
 
                     jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     MySingleton.getInstance(RegisterActivity.this).addToRequest(jsonObjectRequest);
