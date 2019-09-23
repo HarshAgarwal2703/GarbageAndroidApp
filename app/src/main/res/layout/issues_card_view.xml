@@ -23,6 +23,7 @@
               android:id="@+id/PostImageView"
               android:layout_width="match_parent"
               android:layout_height="150dp"
+              android:src="@color/black"
               android:layout_gravity="center"
               android:adjustViewBounds="true"
               android:padding="10dp"

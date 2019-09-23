@@ -1,4 +1,4 @@
-package com.example.grabagecleanup.activity;
+package com.example.garbagecleanup.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +13,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.grabagecleanup.AppConstants;
-import com.example.grabagecleanup.MySingleton;
-import com.example.grabagecleanup.R;
+import com.example.garbagecleanup.AppConstants;
+import com.example.garbagecleanup.MySingleton;
+import com.example.garbagecleanup.R;
 import com.example.grabagecleanup.model.LoginUser;
 import com.example.grabagecleanup.model.User;
 import com.google.gson.Gson;
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, com.example.garbagecleanup.activity.RegisterActivity.class));
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {

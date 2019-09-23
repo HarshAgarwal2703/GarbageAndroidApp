@@ -7,7 +7,6 @@ import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.fragments.TAB_1;
 import com.example.garbagecleanup.fragments.TAB_2;
 import com.example.garbagecleanup.fragments.TAB_3;
-import com.example.grabagecleanup.activity.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;

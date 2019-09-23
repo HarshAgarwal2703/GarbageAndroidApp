@@ -49,7 +49,7 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
         holder.LatitudeTextView.setText(issueModelClass.getLatitude());
         holder.LongitudeTextView.setText(issueModelClass.getLongitude());
         holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-
+//        holder.ImageView.setImageDrawable(context.getDrawable(R.drawable.ic_launcher_foreground));
         holder.cardView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override

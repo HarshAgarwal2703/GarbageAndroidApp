@@ -18,6 +18,9 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true">
+        <activity android:name=".click_2_send.DisplayImages2" />
+        <activity android:name="com.example.garbagecleanup.activity.LoginActivity" />
+        <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".click_2_send.DisplayImages" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>

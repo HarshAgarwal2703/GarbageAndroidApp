@@ -1,10 +1,10 @@
-package com.example.grabagecleanup.click_2_send;
+package com.example.garbagecleanup.click_2_send;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.grabagecleanup.R;
+import com.example.garbagecleanup.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
