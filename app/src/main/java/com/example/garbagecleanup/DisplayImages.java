@@ -22,7 +22,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.garbagecleanup.Database.SampleSQLiteDBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
@@ -40,7 +39,6 @@ public class DisplayImages extends AppCompatActivity {
     FloatingActionButton FAB_SEND_ISSUE;
     Button SavePostInGalleryButton;
     SharedPreferences sharedPreferences;
-    Button ViewPostInGalleryButton;
     int numRequests = 0;
     Bitmap bitmap;
     String latitude;
@@ -57,7 +55,6 @@ public class DisplayImages extends AppCompatActivity {
         LongitudeText = findViewById(R.id.LongitudeText);
         FAB_SEND_ISSUE = findViewById(R.id.floatingActionButton);
         SavePostInGalleryButton = findViewById(R.id.SaveInGalleryButton);
-        ViewPostInGalleryButton=findViewById(R.id.ViewInGalleryButton);
 
 
         sharedPreferences = getPreferences(MODE_PRIVATE);
@@ -77,7 +74,7 @@ public class DisplayImages extends AppCompatActivity {
 
         final JSONObject jsonObject = new JSONObject();
         try {
-//            jsonObject.put("displayImage", ImageToString(bitmap));
+            jsonObject.put("displayImage", ImageToString(bitmap));
 //            jsonObject.put("Latitude",latitude);
 //            jsonObject.put("Longitude",longitude);
             jsonObject.put("title", "Bhavya Mc KA BAcha");
@@ -148,13 +145,7 @@ public class DisplayImages extends AppCompatActivity {
             }
         });
 
-        ViewPostInGalleryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String json = sharedPreferences.getString("MyObject", "");
-                Log.e("zvz",json);
-            }
-        });
+
 
 
     }
@@ -184,7 +175,7 @@ public class DisplayImages extends AppCompatActivity {
 
     private String ImageToString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imgBytes, Base64.DEFAULT);
     }

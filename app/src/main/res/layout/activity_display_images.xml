@@ -37,26 +37,24 @@
             android:text="LOCATION"
             android:textSize="20sp" />
 
-        <LinearLayout
+
+        <EditText
+            android:id="@+id/TitleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add TITLE"/>
+
+        <EditText
+            android:id="@+id/DescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add Description"/>
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SAVE"
-                android:id="@+id/SaveInGalleryButton"
-                />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="View"
-                android:id="@+id/ViewInGalleryButton"
-                />
-
-
-        </LinearLayout>
+            android:text="SAVE"
+            android:id="@+id/SaveInGalleryButton" />
 
 
     </LinearLayout>

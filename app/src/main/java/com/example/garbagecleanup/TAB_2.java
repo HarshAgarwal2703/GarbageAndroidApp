@@ -201,6 +201,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         }
     }
 
+    @SuppressLint("RestrictedApi")
     public void onStart()
     {
         super.onStart();
@@ -227,6 +228,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         googleApiClient.disconnect();
       super.onStop();
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
        if(ActivityCompat.checkSelfPermission(getContext(),ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

@@ -33,7 +33,6 @@ public class TAB_1 extends Fragment {
     RecyclerView recyclerView;
     PageAdapter pageAdapter;
     List<Issue_Model_Class> IssueList;
-    ImageButton filterButton;
 
     public static TAB_1 newInstance()
     {
@@ -47,12 +46,11 @@ public class TAB_1 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_tab_1, container, false);
-        IssueList = new ArrayList<>();
+        IssueList = new ArrayList<Issue_Model_Class>();
         recyclerView = view.findViewById(R.id.RecyclerTab1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        filterButton=view.findViewById(R.id.FilterButton);
         pageAdapter = new PageAdapter(getContext(), IssueList);
         recyclerView.setAdapter(pageAdapter);
 
@@ -61,61 +59,72 @@ public class TAB_1 extends Fragment {
             @Override
             public void onRefresh() {
                 IssueList.clear();
-                getData();
+                getSampleData();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+
         return view;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getData();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getSampleData();
 
     }
 
+    private void getSampleData() {
+        IssueList.clear();
 
-    private void getData() {
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        for (int i = 0; i <= 10; i++) {
+            Issue_Model_Class issueModelClass = new Issue_Model_Class();
+            issueModelClass.setLatitude("10.0");
+            issueModelClass.setLongitude("10.0");
+            issueModelClass.setRating(10);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AppConstants.POST_IMAGES_URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
+            IssueList.add(issueModelClass);
+        }
 
-                        Issue_Model_Class issueModelClass = new Issue_Model_Class();
-                        issueModelClass.setLatitude(jsonObject.getString("latitude"));
-                        issueModelClass.setLongitude(jsonObject.getString("longitude"));
-                        issueModelClass.setRating(jsonObject.getDouble("id"));
-
-                        IssueList.add(issueModelClass);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        progressDialog.dismiss();
-                    }
-                }
-                pageAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley", error.toString());
-                progressDialog.dismiss();
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(jsonArrayRequest);
+       pageAdapter.notifyDataSetChanged();
     }
+
+//
+//    private void getData() {
+//        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.show();
+//
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AppConstants.POST_IMAGES_URL, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                for (int i = 0; i < response.length(); i++) {
+//                    try {
+//                        JSONObject jsonObject = response.getJSONObject(i);
+//
+//                        Issue_Model_Class issueModelClass = new Issue_Model_Class();
+//                        issueModelClass.setLatitude(jsonObject.getString("latitude"));
+//                        issueModelClass.setLongitude(jsonObject.getString("longitude"));
+//                        issueModelClass.setRating(jsonObject.getDouble("id"));
+//
+//                        IssueList.add(issueModelClass);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        progressDialog.dismiss();
+//                    }
+//                }
+//                pageAdapter.notifyDataSetChanged();
+//                progressDialog.dismiss();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("Volley", error.toString());
+//                progressDialog.dismiss();
+//            }
+//        });
+//        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//        requestQueue.add(jsonArrayRequest);
+//    }
 }

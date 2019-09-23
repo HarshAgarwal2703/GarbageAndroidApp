@@ -5,16 +5,25 @@ public class Issue_Model_Class {
     private String id;
     private String Latitude;
     private String Longitude;
-    private double rating;
+    private int rating;
     private byte[] img;
     private String Date;
+    private boolean checkLiked;
 
     public Issue_Model_Class()
     {
-
+        super();
     }
 
-    public Issue_Model_Class(String id, String Latitude, String Longitude, double rating, byte[] img) {
+    public boolean isCheckLiked() {
+        return checkLiked;
+    }
+
+    public void setCheckLiked(boolean checkLiked) {
+        this.checkLiked = checkLiked;
+    }
+
+    public Issue_Model_Class(String id, String Latitude, String Longitude, int rating, byte[] img) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
@@ -22,7 +31,7 @@ public class Issue_Model_Class {
         this.img = img;
     }
 
-    public Issue_Model_Class(String id, String Latitude, String Longitude, double rating, byte[] img, String Date) {
+    public Issue_Model_Class(String id, String Latitude, String Longitude, int rating, byte[] img, String Date) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
@@ -66,7 +75,7 @@ public class Issue_Model_Class {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
