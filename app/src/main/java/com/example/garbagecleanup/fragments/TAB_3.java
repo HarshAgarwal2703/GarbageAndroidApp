@@ -8,18 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.LoginActivity;
 import com.example.garbagecleanup.activity.ViewDrafts;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.MySingleton;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class TAB_3 extends Fragment {
 
@@ -44,7 +43,7 @@ public class TAB_3 extends Fragment {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = MySingleton.getInstance().getSharedPreferences();
                 sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, false).commit();
                 sharedPreferences.edit().putString(AppConstants.SP_GET_USER, "").commit();
                 Toast.makeText(getActivity(), "Logged Out", Toast.LENGTH_LONG).show();

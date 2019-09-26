@@ -16,9 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
-import com.example.garbagecleanup.AppConstants;
-import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.LoginUser;
 import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                                     user.setPhoneNumber(userObj.getInt("phone_number"));
                                     user.setUserId(userObj.getInt("id"));
 
-                                    SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                    SharedPreferences sharedPreferences = MySingleton.getInstance().getSharedPreferences();
                                     sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
                                     sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
                                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                    MySingleton.getInstance(LoginActivity.this).addToRequest(jsonArrayRequest);
+                    MySingleton.getInstance().addToRequest(jsonArrayRequest);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

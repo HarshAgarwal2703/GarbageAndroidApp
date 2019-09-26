@@ -1,4 +1,4 @@
-package com.example.garbagecleanup;
+package com.example.garbagecleanup.helper;
 
 public class AppConstants {
     public static final String SHARED_PREFERENCES_NAME = "Garbage";
@@ -10,7 +10,8 @@ public class AppConstants {
     public static final int RequestPermissionCode = 1003 ;
 
     public static final String ServerURL = "http://bhavya17ahir.pythonanywhere.com/";
-    public static final String POST_IMAGES_URL = ServerURL + "postAPI/";
+    public static final String POST_IMAGES_URL = ServerURL + "post/upload/";
     public static final String REGISTER_USER = ServerURL + "user/register/";
     public static final String LOGIN_USER = ServerURL + "user/login/";
+    public static final String GET_POSTS = ServerURL + "postAPI/";
 }

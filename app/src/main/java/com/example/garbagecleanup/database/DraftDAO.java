@@ -26,6 +26,9 @@ public interface DraftDAO {
     @Insert
     void insert(Draft draft);
 
+    @Query("UPDATE DraftTable SET description = :description, title =:title WHERE timestamp=:timestamp")
+    void update(String description, String title, String timestamp);
+
     @Delete
     void delete(Draft draft);
 }

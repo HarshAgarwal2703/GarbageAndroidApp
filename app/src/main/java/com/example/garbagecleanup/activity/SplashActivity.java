@@ -2,9 +2,11 @@ package com.example.garbagecleanup.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
-import com.example.garbagecleanup.AppConstants;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.MySingleton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,11 +14,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
+    private static final String TAG = "SplashActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        sharedPreferences = getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        sharedPreferences = MySingleton.getInstance().getSharedPreferences();
+        Log.i(TAG, "onCreate: " + sharedPreferences.getBoolean(AppConstants.SP_LOGGED_IN, false));
         if (sharedPreferences.getBoolean(AppConstants.SP_LOGGED_IN, false)) {
             startActivity(MainActivity.makeIntent(this));
         } else {

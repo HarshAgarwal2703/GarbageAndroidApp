@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.location.Location;
 import android.os.Bundle;
@@ -19,10 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.garbagecleanup.AppConstants;
-import com.example.garbagecleanup.GpsUtils;
 import com.example.garbagecleanup.R;
-import com.example.garbagecleanup.click_2_send.DisplayImages;
+import com.example.garbagecleanup.activity.DisplayImages;
+import com.example.garbagecleanup.activity.MainActivity;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.GpsUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,7 +46,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-
+    private static final String TAG = "TAB_2";
     Camera camera;
     FloatingActionButton FAB_click_photo;
 
@@ -76,14 +78,6 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         FAB_click_photo=(FloatingActionButton)view.findViewById(R.id.FAB_clickpicture);
         FAB_click_photo.setVisibility(View.VISIBLE);
 
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_REQUEST_CODE);
-        }
-        else {
-            surfaceHolder.addCallback(this);
-            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        }
 
         googleApiClient= new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -113,40 +107,41 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                 final Intent intent = new Intent(getActivity(), DisplayImages.class);
 
                 Bitmap bmp=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                String filePath= tempFileImage(getContext(), bmp,"image");
+                String filePath = tempFileImage(getContext(), rotateBitmap(bmp), "image");
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
-                intent.putExtra("timestamp", System.currentTimeMillis());
+                intent.putExtra("CallingActivity", MainActivity.class.toString());
+
+                Log.i(TAG, "onPictureTaken: " + System.currentTimeMillis());
+                intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
 
                 startActivity(intent);
                 camera.release();
 
             }
 
-            private String tempFileImage(Context context, Bitmap bitmap, String name) {
-
-                File outputDir = context.getCacheDir();
-                File imageFile = new File(outputDir, name + ".jpg");
-
-                OutputStream os;
-                try {
-                    os = new FileOutputStream(imageFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                    os.flush();
-                    os.close();
-                } catch (Exception e) {
-                    Log.e(context.getClass().getSimpleName(), "Error writing file", e);
-                }
-
-                return imageFile.getAbsolutePath();
-            }
         };
 
-
-
-
         return view;
+    }
+
+    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
+
+        File outputDir = context.getCacheDir();
+        File imageFile = new File(outputDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
+        }
+
+        return imageFile.getAbsolutePath();
     }
 
     private File getOutputMediaFile(int mediaTypeImage) {
@@ -204,6 +199,18 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                     Toast.makeText(getContext(),"NEED PERMISSION",Toast.LENGTH_LONG).show();
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_REQUEST_CODE);
+        } else {
+            surfaceHolder.addCallback(this);
+            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        }
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -270,4 +277,15 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
             }
         }
     }
+
+    private Bitmap rotateBitmap(Bitmap bitmap) {
+        int h = bitmap.getHeight();
+        int w = bitmap.getWidth();
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(90);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+    }
+
 }

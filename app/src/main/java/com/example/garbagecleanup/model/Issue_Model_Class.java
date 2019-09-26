@@ -2,13 +2,31 @@ package com.example.garbagecleanup.model;
 
 public class Issue_Model_Class {
 
-    private String id;
+    private int id;
     private String Latitude;
     private String Longitude;
     private int rating;
-    private byte[] img;
-    private String Date;
+    private String imageUrl;
+    private String published_Date;
     private boolean checkLiked;
+    private String title;
+    private String description;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Issue_Model_Class() {
         super();
@@ -22,36 +40,28 @@ public class Issue_Model_Class {
         this.checkLiked = checkLiked;
     }
 
-    public Issue_Model_Class(String id, String Latitude, String Longitude, int rating, byte[] img) {
+    public Issue_Model_Class(int id, String Latitude, String Longitude, int rating, String imageUrl, String published_Date) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
         this.rating = rating;
-        this.img = img;
+        this.imageUrl = imageUrl;
+        this.published_Date = published_Date;
     }
 
-    public Issue_Model_Class(String id, String Latitude, String Longitude, int rating, byte[] img, String Date) {
-        this.id = id;
-        this.Latitude = Latitude;
-        this.Longitude = Longitude;
-        this.rating = rating;
-        this.img = img;
-        this.Date = Date;
+    public String getPublished_Date() {
+        return published_Date;
     }
 
-    public String getDate() {
-        return Date;
+    public void setPublished_Date(String published_Date) {
+        this.published_Date = published_Date;
     }
 
-    public void setDate(String date) {
-        Date = date;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -71,7 +81,7 @@ public class Issue_Model_Class {
         this.Longitude = Longitude;
     }
 
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
@@ -79,12 +89,12 @@ public class Issue_Model_Class {
         this.rating = rating;
     }
 
-    public byte[] getImg() {
-        return img;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImg(byte[] img) {
-        this.img = img;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
@@ -94,8 +104,8 @@ public class Issue_Model_Class {
                 ", Latitude='" + Latitude + '\'' +
                 ", Longitude='" + Longitude + '\'' +
                 ", rating=" + rating +
-                ", img=" + img +
-                ", Date='" + Date + '\'' +
+                ", imageUrl=" + imageUrl +
+                ", published_Date='" + published_Date + '\'' +
                 '}';
     }
 }

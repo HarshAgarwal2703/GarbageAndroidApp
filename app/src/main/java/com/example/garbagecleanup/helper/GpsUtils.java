@@ -1,4 +1,4 @@
-package com.example.garbagecleanup;
+package com.example.garbagecleanup.helper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

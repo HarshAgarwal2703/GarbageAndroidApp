@@ -16,9 +16,9 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.garbagecleanup.AppConstants;
-import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.RegisterUser;
 import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
                             );
 
                     jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    MySingleton.getInstance(RegisterActivity.this).addToRequest(jsonObjectRequest);
+                    MySingleton.getInstance().addToRequest(jsonObjectRequest);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

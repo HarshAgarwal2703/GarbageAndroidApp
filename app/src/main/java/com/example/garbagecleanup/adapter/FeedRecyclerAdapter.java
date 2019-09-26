@@ -1,5 +1,6 @@
 package com.example.garbagecleanup.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.model.Issue_Model_Class;
 
@@ -36,32 +38,35 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
     @Override
     public PageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.issues_card_view, null);
+        View view = layoutInflater.inflate(R.layout.issues_card_view, parent, false);
         PageViewHolder pageViewHolder = new PageViewHolder(view);
         Log.e("jdbkkjsb", String.valueOf(count++));
         return pageViewHolder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder holder, int position) {
         issueModelClass = issueList.get(position);
         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getRating()));
-        holder.LatitudeTextView.setText(issueModelClass.getLatitude());
-        holder.LongitudeTextView.setText(issueModelClass.getLongitude());
-        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-//        holder.ImageView.setImageDrawable(context.getDrawable(R.drawable.ic_launcher_foreground));
+        holder.descriptionTexView.setText(issueModelClass.getDescription());
+        holder.TitleTextView.setText(issueModelClass.getTitle());
+        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+//        holder.ImageView.setImageDrawable(Glide.get(context).);
+        Glide.with(context).load(issueModelClass.getImageUrl()).into(holder.ImageView);
         holder.cardView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
                     Log.d("TEST", "onDoubleTap");
                     if (!issueModelClass.isCheckLiked()) {
-                        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_green_24dp);
                         issueModelClass.setCheckLiked(true);
                         issueModelClass.setRating((int) (issueModelClass.getRating() + 1));
                         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getRating()));
                     } else {
-                        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                        holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                         issueModelClass.setCheckLiked(false);
                         issueModelClass.setRating((int) (issueModelClass.getRating() - 1));
                         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getRating()));
@@ -91,12 +96,12 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
             public void onClick(View v) {
 
                 if (!issueModelClass.isCheckLiked()) {
-                    holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_green_24dp);
                     issueModelClass.setCheckLiked(true);
                     issueModelClass.setRating((int) (issueModelClass.getRating() + 1));
                     holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getRating()));
                 } else {
-                    holder.UpVoteLikeButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                     issueModelClass.setCheckLiked(false);
                     issueModelClass.setRating((int) (issueModelClass.getRating() - 1));
                     holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getRating()));
@@ -113,8 +118,8 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
 
     class PageViewHolder extends RecyclerView.ViewHolder {
 
-        TextView LatitudeTextView;
-        TextView LongitudeTextView;
+        TextView TitleTextView;
+        TextView descriptionTexView;
         TextView UpvotesTextView;
         ImageView ImageView;
         ImageButton UpVoteLikeButton;
@@ -122,8 +127,8 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
 
         public PageViewHolder(@NonNull View itemView) {
             super(itemView);
-            LatitudeTextView = itemView.findViewById(R.id.TitleTextView);
-            LongitudeTextView = itemView.findViewById(R.id.DescriptionTextView);
+            TitleTextView = itemView.findViewById(R.id.TitleTextView);
+            descriptionTexView = itemView.findViewById(R.id.DescriptionTextView);
             UpvotesTextView = itemView.findViewById(R.id.UpvotesTextView);
             ImageView = itemView.findViewById(R.id.PostImageView);
             UpVoteLikeButton = itemView.findViewById(R.id.likeIcon);

@@ -3,14 +3,18 @@ package com.example.garbagecleanup.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.activity.DisplayImages;
+import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.Draft;
 
 import java.util.List;
@@ -55,6 +59,20 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         Bitmap bmp = BitmapFactory.decodeByteArray(draft.getImage(), 0, draft.getImage().length);
         holder.ImageView.setImageBitmap(bmp);
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(DisplayImages.makeIntent(context, draft));
+            }
+        });
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override
@@ -70,6 +88,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         ImageView ImageView;
         CardView cardView;
         TextView AreaTextView;
+        Button btnDelete;
 
         public DraftsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +98,23 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
             ImageView = itemView.findViewById(R.id.DraftImageView);
             AreaTextView = itemView.findViewById(R.id.AreaTextView);
             cardView = itemView.findViewById(R.id.DraftsCardView);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
+        }
+    }
+
+    private static class DeleteDraft extends AsyncTask<Draft, Void, Void> {
+        private Context context;
+
+        @Override
+        protected Void doInBackground(Draft... drafts) {
+            MySingleton.getInstance().getAppDatabase().draftDAO().delete(drafts[0]);
+            Log.d(TAG, "doInBackground: " + "inserted");
+//            Toast.makeText(context,"INSERTED TO DATABASE",Toast.LENGTH_LONG).show();
+            return null;
+        }
+
+        public DeleteDraft(Context context) {
+            this.context = context;
         }
     }
 

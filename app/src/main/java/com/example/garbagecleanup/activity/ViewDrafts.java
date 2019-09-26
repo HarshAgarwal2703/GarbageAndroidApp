@@ -6,11 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.garbagecleanup.AppConstants;
-import com.example.garbagecleanup.MySingleton;
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.adapter.AutoFitGridLayoutManager;
 import com.example.garbagecleanup.adapter.DraftsRecyclerAdapter;
+import com.example.garbagecleanup.helper.AppConstants;
+import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.Draft;
 import com.example.garbagecleanup.model.User;
 import com.google.gson.Gson;
@@ -80,7 +80,7 @@ public class ViewDrafts extends AppCompatActivity {
         @Override
         protected ArrayList<Draft> doInBackground(Void... voids) {
             User user = new Gson().fromJson(context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getString(AppConstants.SP_GET_USER, ""), User.class);
-            List<Draft> draftList = MySingleton.getInstance(context).getAppDatabase().draftDAO().getAllCurrentUserDrafts(user.getUserId());
+            List<Draft> draftList = MySingleton.getInstance().getAppDatabase().draftDAO().getAllCurrentUserDrafts(user.getUserId());
 //            Log.d(TAG, "doInBackground: "+draftList);
             return (ArrayList) draftList;
         }
