@@ -12,7 +12,7 @@ public class Issue_Model_Class {
     @SerializedName("longitude")
     private String Longitude;
     @SerializedName("vote_count")
-    private int rating;
+    private int votes;
     @SerializedName("image")
     private String imageUrl;
     @SerializedName("published_date")
@@ -61,11 +61,11 @@ public class Issue_Model_Class {
         this.checkLiked = checkLiked;
     }
 
-    public Issue_Model_Class(int id, String Latitude, String Longitude, int rating, String imageUrl, String published_Date) {
+    public Issue_Model_Class(int id, String Latitude, String Longitude, int votes, String imageUrl, String published_Date) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
-        this.rating = rating;
+        this.votes = votes;
         this.imageUrl = imageUrl;
         this.published_Date = published_Date;
     }
@@ -102,12 +102,12 @@ public class Issue_Model_Class {
         this.Longitude = Longitude;
     }
 
-    public int getRating() {
-        return rating;
+    public int getVotes() {
+        return votes;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 
     public String getImageUrl() {
@@ -124,7 +124,7 @@ public class Issue_Model_Class {
                 "id=" + id +
                 ", Latitude='" + Latitude + '\'' +
                 ", Longitude='" + Longitude + '\'' +
-                ", rating=" + rating +
+                ", votes=" + votes +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", published_Date='" + published_Date + '\'' +
                 ", checkLiked=" + checkLiked +

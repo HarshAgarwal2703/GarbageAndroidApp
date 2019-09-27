@@ -25,6 +25,7 @@ import com.example.garbagecleanup.activity.DisplayImages;
 import com.example.garbagecleanup.activity.MainActivity;
 import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.helper.GpsUtils;
+import com.example.garbagecleanup.helper.MySingleton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,6 +58,8 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     FusedLocationProviderClient fusedLocationProviderClient;
     String latitude;
     String longitude;
+    String locationAddress;
+
     private boolean isGPS = false;
 
 
@@ -105,14 +108,13 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
                 final Intent intent = new Intent(getActivity(), DisplayImages.class);
-
                 Bitmap bmp=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                 String filePath = tempFileImage(getContext(), rotateBitmap(bmp), "image");
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
+                intent.putExtra("Area Name", locationAddress);
                 intent.putExtra("CallingActivity", MainActivity.class.toString());
-
                 Log.i(TAG, "onPictureTaken: " + System.currentTimeMillis());
                 intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
 
@@ -249,6 +251,8 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                        public void onSuccess(Location location) {
                            latitude = String.valueOf(location.getLatitude());
                            longitude = String.valueOf(location.getLongitude());
+
+                           locationAddress = MySingleton.getAdress(location.getLatitude(), location.getLongitude());
                        }
                    });
 

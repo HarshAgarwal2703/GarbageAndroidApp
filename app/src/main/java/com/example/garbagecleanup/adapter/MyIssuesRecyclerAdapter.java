@@ -47,7 +47,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
 
         Issue_Model_Class issueModelClass = issueModelClassArrayList.get(position);
         Log.d(TAG, "onBindViewHolder: " + issueModelClass);
-        holder.tvUpvotes.setText(String.valueOf(issueModelClass.getRating()));
+        holder.tvUpvotes.setText(String.valueOf(issueModelClass.getVotes()));
         holder.tvNoOfVotes.setVisibility(View.VISIBLE);
         holder.tvDescription.setText(issueModelClass.getDescription());
         holder.tvTitle.setText(issueModelClass.getTitle());

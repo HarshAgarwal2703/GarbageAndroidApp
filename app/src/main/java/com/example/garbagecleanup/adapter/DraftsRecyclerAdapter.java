@@ -1,6 +1,7 @@
 package com.example.garbagecleanup.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import com.example.garbagecleanup.model.Draft;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,8 +29,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
 
     private Context context;
     private List<Draft> DraftList;
-    Draft draft;
-    int count = 0;
+
     private static final String TAG = "DraftsRecyclerAdapter";
 
     public DraftsRecyclerAdapter(Context context, List<Draft> draftList) {
@@ -43,18 +44,17 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.drafts_card_view, null);
         DraftsViewHolder draftsViewHolder = new DraftsViewHolder(view);
-        Log.e("jdbkkjsb", String.valueOf(count++));
         return draftsViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final DraftsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DraftsViewHolder holder, final int position) {
 
-        draft = DraftList.get(position);
+        final Draft draft = DraftList.get(position);
         Log.i(TAG, "onBindViewHolder: " + draft);
         holder.TitleTextView.setText(draft.getTitle());
         holder.DescriptionTextView.setText(draft.getDescription());
-        holder.AreaTextView.setText(draft.getLatitude());
+        holder.AreaTextView.setText(draft.getAreaName());
         holder.TimeStamp.setText(draft.getTimestamp());
         Bitmap bmp = BitmapFactory.decodeByteArray(draft.getImage(), 0, draft.getImage().length);
         holder.ImageView.setImageBitmap(bmp);
@@ -69,7 +69,30 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setMessage("ARE YOU SURE YOU WANT TO DELETE");
+                alert.setCancelable(true);
 
+                alert.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new DeleteDraft(DraftsRecyclerAdapter.this).execute(position);
+                                dialog.cancel();
+                            }
+                        }
+                );
+                alert.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }
+                );
+                AlertDialog alert11 = alert.create();
+                alert11.show();
+                notifyDataSetChanged();
             }
         });
 
@@ -102,18 +125,24 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         }
     }
 
-    private static class DeleteDraft extends AsyncTask<Draft, Void, Void> {
-        private Context context;
+    private class DeleteDraft extends AsyncTask<Integer, Void, Void> {
+        private DraftsRecyclerAdapter context;
 
         @Override
-        protected Void doInBackground(Draft... drafts) {
-            MySingleton.getInstance().getAppDatabase().draftDAO().delete(drafts[0]);
+        protected Void doInBackground(Integer... ints) {
+            MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
             Log.d(TAG, "doInBackground: " + "inserted");
 //            Toast.makeText(context,"INSERTED TO DATABASE",Toast.LENGTH_LONG).show();
             return null;
         }
 
-        public DeleteDraft(Context context) {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            DraftsRecyclerAdapter.this.notifyDataSetChanged();
+        }
+
+        public DeleteDraft(DraftsRecyclerAdapter context) {
             this.context = context;
         }
     }

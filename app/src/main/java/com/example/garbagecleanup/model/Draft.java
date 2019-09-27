@@ -31,13 +31,16 @@ public class Draft {
     @ColumnInfo(name = "longitude")
     public String longitude;
 
+    @ColumnInfo(name = "area name")
+    public String AreaName;
+
     @ColumnInfo(name = "timestamp")
     public String timestamp;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] image;
 
-    public Draft(int userID, String title, String description, String latitude, String longitude, String timestamp, byte[] image) {
+    public Draft(int userID, String title, String description, String latitude, String longitude, String timestamp, byte[] image, String AreaName) {
         this.userID = userID;
         this.title = title;
         this.description = description;
@@ -45,6 +48,7 @@ public class Draft {
         this.longitude = longitude;
         this.timestamp = timestamp;
         this.image = image;
+        this.AreaName = AreaName;
     }
 
     public int getDraft_id() {
@@ -79,6 +83,14 @@ public class Draft {
         return image;
     }
 
+    public String getAreaName() {
+        return AreaName;
+    }
+
+    public void setAreaName(String areaName) {
+        AreaName = areaName;
+    }
+
     @Override
     public String toString() {
         return "Draft{" +
@@ -88,6 +100,7 @@ public class Draft {
                 ", description='" + description + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +
+                ", AreaName='" + AreaName + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 ", image=" + Arrays.toString(image) +
                 '}';
