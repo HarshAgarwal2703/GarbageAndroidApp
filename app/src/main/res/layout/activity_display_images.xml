@@ -22,19 +22,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/LatitudeText"
+            android:id="@+id/AreaText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_above="@+id/LongitudeText"
+            android:layout_above="@+id/TitleEditText"
             android:text="LOCATION"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/LongitudeText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="LOCATION"
-            android:textSize="20sp" />
 
 
         <EditText

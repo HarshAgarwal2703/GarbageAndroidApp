@@ -5,7 +5,7 @@ public class Issue_Model_Class {
     private int id;
     private String Latitude;
     private String Longitude;
-    private int rating;
+    private int votes;
     private String imageUrl;
     private String published_Date;
     private boolean checkLiked;
@@ -33,7 +33,7 @@ public class Issue_Model_Class {
     }
 
     public boolean isCheckLiked() {
-        return checkLiked;
+        return this.checkLiked;
     }
 
     public void setCheckLiked(boolean checkLiked) {
@@ -44,7 +44,7 @@ public class Issue_Model_Class {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
-        this.rating = rating;
+        this.votes = rating;
         this.imageUrl = imageUrl;
         this.published_Date = published_Date;
     }
@@ -81,12 +81,12 @@ public class Issue_Model_Class {
         this.Longitude = Longitude;
     }
 
-    public int getRating() {
-        return rating;
+    public int getVotes() {
+        return votes;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setVotes(int rating) {
+        this.votes = rating;
     }
 
     public String getImageUrl() {
@@ -103,9 +103,12 @@ public class Issue_Model_Class {
                 "id=" + id +
                 ", Latitude='" + Latitude + '\'' +
                 ", Longitude='" + Longitude + '\'' +
-                ", rating=" + rating +
-                ", imageUrl=" + imageUrl +
+                ", votes=" + votes +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", published_Date='" + published_Date + '\'' +
+                ", checkLiked=" + checkLiked +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.example.garbagecleanup.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import com.example.garbagecleanup.model.Draft;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +57,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         Log.i(TAG, "onBindViewHolder: " + draft);
         holder.TitleTextView.setText(draft.getTitle());
         holder.DescriptionTextView.setText(draft.getDescription());
-        holder.AreaTextView.setText(draft.getLatitude());
+        holder.AreaTextView.setText(draft.getAreaName());
         holder.TimeStamp.setText(draft.getTimestamp());
         Bitmap bmp = BitmapFactory.decodeByteArray(draft.getImage(), 0, draft.getImage().length);
         holder.ImageView.setImageBitmap(bmp);
@@ -69,6 +72,30 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder alert=new AlertDialog.Builder(context);
+                alert.setMessage("ARE YOU SURE YOU WANT TO DELETE");
+                alert.setCancelable(true);
+
+                alert.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new DeleteDraft(DraftsRecyclerAdapter.this).execute(draft);
+                                dialog.cancel();
+                            }
+                        });
+
+                alert.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = alert.create();
+                alert11.show();
+                notifyDataSetChanged();
 
             }
         });
@@ -102,8 +129,9 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         }
     }
 
-    private static class DeleteDraft extends AsyncTask<Draft, Void, Void> {
-        private Context context;
+    private class DeleteDraft extends AsyncTask<Draft, Void, Void> {
+        private DraftsRecyclerAdapter context;
+
 
         @Override
         protected Void doInBackground(Draft... drafts) {
@@ -113,7 +141,13 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
             return null;
         }
 
-        public DeleteDraft(Context context) {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            DraftsRecyclerAdapter.this.notifyDataSetChanged();
+        }
+
+        public DeleteDraft(DraftsRecyclerAdapter context) {
             this.context = context;
         }
     }

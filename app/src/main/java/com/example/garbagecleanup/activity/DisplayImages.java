@@ -38,8 +38,8 @@ public class DisplayImages extends AppCompatActivity {
     private static final String TAG = "DisplayImages";
     ImageView displayImage;
 
-    TextView LatitudeText;
-    TextView LongitudeText, titleEditText, descriptionEditText;
+    TextView AreaTextView;
+    TextView  titleEditText, descriptionEditText;
     FloatingActionButton FAB_SEND_ISSUE;
     Button SavePostInGalleryButton, UpdatePostInGalleryButton;
     SharedPreferences sharedPreferences;
@@ -47,7 +47,7 @@ public class DisplayImages extends AppCompatActivity {
     Bitmap bitmap;
     //    String latitude;
 //    String longitude;
-    private String title, description, latitude, longitude, timestamp, filePath;
+    private String title, description, latitude, longitude, timestamp, filePath,AreaName;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -55,8 +55,7 @@ public class DisplayImages extends AppCompatActivity {
         setContentView(R.layout.activity_display_images);
 
         displayImage = findViewById(R.id.Display_Image);
-        LatitudeText = findViewById(R.id.LatitudeText);
-        LongitudeText = findViewById(R.id.LongitudeText);
+        AreaTextView = findViewById(R.id.AreaText);
         FAB_SEND_ISSUE = findViewById(R.id.floatingActionButton);
         SavePostInGalleryButton = findViewById(R.id.SaveInGalleryButton);
         titleEditText = findViewById(R.id.TitleEditText);
@@ -70,14 +69,14 @@ public class DisplayImages extends AppCompatActivity {
             latitude = getIntent().getStringExtra("Latitude");
             longitude = getIntent().getStringExtra("Longitude");
             timestamp = getIntent().getStringExtra("timestamp");
+            AreaName = getIntent().getStringExtra("Area Name");
             final File file = new File(filePath);
             bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
             displayImage.setImageBitmap(bitmap);
 
             if (latitude != null && longitude != null) {
-                LatitudeText.setText(latitude);
-                LongitudeText.setText(longitude);
+                AreaTextView.setText(AreaName);
             }
         } else {
             Draft draft = new Gson().fromJson(getIntent().getStringExtra("draft"), Draft.class);
@@ -87,13 +86,13 @@ public class DisplayImages extends AppCompatActivity {
             latitude = draft.getLatitude();
             longitude = draft.getLongitude();
             timestamp = draft.getTimestamp();
+            AreaName=MySingleton.getAdress(Double.parseDouble(latitude),Double.parseDouble(longitude));
             title = draft.getTitle();
             description = draft.getDescription();
             titleEditText.setText(title);
             descriptionEditText.setText(description);
             displayImage.setImageBitmap(bitmap);
-            LongitudeText.setText(longitude);
-            LatitudeText.setText(latitude);
+            AreaTextView.setText(AreaName);
             SavePostInGalleryButton.setVisibility(View.GONE);
             UpdatePostInGalleryButton.setVisibility(View.VISIBLE);
 
@@ -153,7 +152,8 @@ public class DisplayImages extends AppCompatActivity {
                         latitude,
                         longitude,
                         timestamp,
-                        BitmapToByte(bitmap)
+                        BitmapToByte(bitmap),
+                        AreaName
                 );
                 new InsertDraft(DisplayImages.this).execute(draft);
 
@@ -172,7 +172,8 @@ public class DisplayImages extends AppCompatActivity {
                         latitude,
                         longitude,
                         timestamp,
-                        BitmapToByte(bitmap)
+                        BitmapToByte(bitmap),
+                        AreaName
                 );
                 new UpdateDraft(DisplayImages.this).execute(draft);
 
