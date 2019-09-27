@@ -1,16 +1,37 @@
 package com.example.garbagecleanup.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Issue_Model_Class {
 
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("latitude")
     private String Latitude;
+    @SerializedName("longitude")
     private String Longitude;
+    @SerializedName("vote_count")
     private int rating;
+    @SerializedName("image")
     private String imageUrl;
+    @SerializedName("published_date")
     private String published_Date;
     private boolean checkLiked;
+    @SerializedName("title")
     private String title;
+    @SerializedName("Description")
     private String description;
+    @SerializedName("status")
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getTitle() {
         return title;
@@ -104,8 +125,12 @@ public class Issue_Model_Class {
                 ", Latitude='" + Latitude + '\'' +
                 ", Longitude='" + Longitude + '\'' +
                 ", rating=" + rating +
-                ", imageUrl=" + imageUrl +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", published_Date='" + published_Date + '\'' +
+                ", checkLiked=" + checkLiked +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

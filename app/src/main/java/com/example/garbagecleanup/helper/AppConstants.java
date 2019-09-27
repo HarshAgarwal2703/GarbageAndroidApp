@@ -14,4 +14,5 @@ public class AppConstants {
     public static final String REGISTER_USER = ServerURL + "user/register/";
     public static final String LOGIN_USER = ServerURL + "user/login/";
     public static final String GET_POSTS = ServerURL + "postAPI/";
+    public static final String MY_ISSUES = ServerURL + "getuserspost/";
 }

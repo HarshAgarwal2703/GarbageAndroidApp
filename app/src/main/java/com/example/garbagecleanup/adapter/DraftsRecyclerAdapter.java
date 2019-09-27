@@ -82,13 +82,13 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
 
     public class DraftsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TitleTextView;
-        TextView DescriptionTextView;
-        TextView TimeStamp;
-        ImageView ImageView;
-        CardView cardView;
-        TextView AreaTextView;
-        Button btnDelete;
+        private TextView TitleTextView;
+        private TextView DescriptionTextView;
+        private TextView TimeStamp;
+        private ImageView ImageView;
+        private CardView cardView;
+        private TextView AreaTextView;
+        private Button btnDelete;
 
         public DraftsViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -48,6 +48,14 @@
                 </ImageButton>
 
                 <TextView
+                  android:id="@+id/tvNoOfVotes"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/black"
+                  android:text="No. of Votes: "
+                  android:textSize="20sp"
+                  android:visibility="gone" />
+                <TextView
                   android:id="@+id/UpvotesTextView"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -103,6 +111,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="."
+                      android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                  android:id="@+id/llStatus"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/LinearLayout2"
+                  android:orientation="horizontal">
+
+                    <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Status: "
+                      android:textSize="20sp" />
+
+                    <TextView
+                      android:id="@+id/tvStatus"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text=""
+                      android:textColor="@color/black"
                       android:textSize="20sp" />
 
                 </LinearLayout>
