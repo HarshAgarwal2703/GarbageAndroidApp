@@ -1,8 +1,6 @@
 package com.example.garbagecleanup.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.AppComponentFactory;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -29,12 +27,12 @@ import com.example.garbagecleanup.model.Issue_Model_Class;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapter.PageViewHolder> {
 
@@ -59,14 +57,15 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder holder, int position) {
-         final Issue_Model_Class issueModelClass = issueList.get(position);
+        final Issue_Model_Class issueModelClass = issueList.get(position);
         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getVotes()));
+        holder.tvStatus.setText(issueModelClass.getStatus());
         holder.descriptionTexView.setText(issueModelClass.getDescription());
         holder.TitleTextView.setText(issueModelClass.getTitle());
-        holder.AreaTexView.setText(MySingleton.getAdress(Double.parseDouble(issueModelClass.getLatitude()),Double.parseDouble(issueModelClass.getLongitude())));
-        if(issueModelClass.isCheckLiked()){
+        holder.AreaTexView.setText(MySingleton.getAdress(Double.parseDouble(issueModelClass.getLatitude()), Double.parseDouble(issueModelClass.getLongitude())));
+        if (issueModelClass.isCheckLiked()) {
             holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_green_24dp);
-        }else{
+        } else {
             holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
         }
 //        holder.ImageView.setImageDrawable(Glide.get(context).);
@@ -81,14 +80,14 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
                         issueModelClass.setCheckLiked(true);
                         issueModelClass.setVotes((int) (issueModelClass.getVotes() + 1));
                         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getVotes()));
-                        likePost(issueModelClass.getId(), PrefManager.getUser().getUserId(),holder);
+                        likePost(issueModelClass.getId(), PrefManager.getUser().getUserId(), holder);
 
                     } else {
                         holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                         issueModelClass.setCheckLiked(false);
                         issueModelClass.setVotes((int) (issueModelClass.getVotes() - 1));
                         holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getVotes()));
-
+                        dislikePost(issueModelClass.getId(), PrefManager.getUser().getUserId(), holder);
                     }
                     return super.onDoubleTap(e);
                 }
@@ -118,12 +117,13 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
                     issueModelClass.setCheckLiked(true);
                     issueModelClass.setVotes((int) (issueModelClass.getVotes() + 1));
                     holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getVotes()));
-                    likePost(issueModelClass.getId(), PrefManager.getUser().getUserId(),holder);
+                    likePost(issueModelClass.getId(), PrefManager.getUser().getUserId(), holder);
                 } else {
                     holder.UpVoteLikeButton.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                     issueModelClass.setCheckLiked(false);
                     issueModelClass.setVotes((int) (issueModelClass.getVotes() - 1));
                     holder.UpvotesTextView.setText(String.valueOf(issueModelClass.getVotes()));
+                    dislikePost(issueModelClass.getId(), PrefManager.getUser().getUserId(), holder);
 
                 }
             }
@@ -146,12 +146,40 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
                 Log.d(TAG, "onResponse: " + response.toString());
             }
         },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "onErrorResponse: " + error.toString());
-                    }
-                });
+                                                                    new Response.ErrorListener() {
+                                                                        @Override
+                                                                        public void onErrorResponse(VolleyError error) {
+                                                                            Log.d(TAG, "onErrorResponse: " + error.toString());
+                                                                        }
+                                                                    }
+        );
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void dislikePost(int PostId, int UserId, final PageViewHolder holder) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("user_id", UserId);
+            jsonObject.put("post_id", PostId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.DOWNVOTE_POST, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Log.d(TAG, "onResponse: " + response.toString());
+            }
+        },
+                                                                    new Response.ErrorListener() {
+                                                                        @Override
+                                                                        public void onErrorResponse(VolleyError error) {
+                                                                            Log.d(TAG, "onErrorResponse: " + error.toString());
+                                                                        }
+                                                                    }
+        );
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjectRequest);
     }
@@ -171,6 +199,7 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
         ImageView ImageView;
         ImageButton UpVoteLikeButton;
         CardView cardView;
+        private TextView tvStatus;
 
         public PageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -181,6 +210,7 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
             UpVoteLikeButton = itemView.findViewById(R.id.likeIcon);
             cardView = itemView.findViewById(R.id.CardView);
             AreaTexView = itemView.findViewById(R.id.AreaTextView);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
 
         }
     }

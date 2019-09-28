@@ -4,19 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.garbagecleanup.database.AppDatabase;
 
-import androidx.room.Room;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.room.Room;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -100,7 +98,7 @@ public class MySingleton {
                 for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                     sb.append(address.getAddressLine(i)).append("\n");
                 }
-                sb.append(address.getAddressLine(0)).append("\n");
+                sb.append(address.getAddressLine(0));
 
                 result = sb.toString();
 

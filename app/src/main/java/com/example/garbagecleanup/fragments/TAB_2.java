@@ -10,8 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,8 +37,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -117,7 +113,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                 intent.putExtra("path", filePath);
                 intent.putExtra("Longitude",longitude);
                 intent.putExtra("Latitude",latitude);
-                intent.putExtra("Area Name",locationAddress);
+                intent.putExtra("Area Name", locationAddress);
                 intent.putExtra("CallingActivity", MainActivity.class.toString());
                 Log.i(TAG, "onPictureTaken: " + System.currentTimeMillis());
                 intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
@@ -256,7 +252,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
                            latitude = String.valueOf(location.getLatitude());
                            longitude = String.valueOf(location.getLongitude());
 
-                           locationAddress= MySingleton.getAdress(location.getLatitude(),location.getLongitude());
+                           locationAddress = MySingleton.getAdress(location.getLatitude(), location.getLongitude());
                        }
                    });
 
@@ -295,7 +291,5 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
         return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
     }
-
-
 
 }

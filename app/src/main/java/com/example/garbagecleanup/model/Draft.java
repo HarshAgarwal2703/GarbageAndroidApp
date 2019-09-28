@@ -48,7 +48,7 @@ public class Draft {
         this.longitude = longitude;
         this.timestamp = timestamp;
         this.image = image;
-        this.AreaName=AreaName;
+        this.AreaName = AreaName;
     }
 
     public int getDraft_id() {

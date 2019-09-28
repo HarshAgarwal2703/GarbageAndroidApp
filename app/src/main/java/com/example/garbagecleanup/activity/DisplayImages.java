@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +40,7 @@ public class DisplayImages extends AppCompatActivity {
     ImageView displayImage;
 
     TextView AreaTextView;
-    TextView  titleEditText, descriptionEditText;
+    TextView titleEditText, descriptionEditText;
     FloatingActionButton FAB_SEND_ISSUE;
     Button SavePostInGalleryButton, UpdatePostInGalleryButton;
     SharedPreferences sharedPreferences;
@@ -47,8 +48,8 @@ public class DisplayImages extends AppCompatActivity {
     Bitmap bitmap;
     //    String latitude;
 //    String longitude;
-    private String title, description, latitude, longitude, timestamp, filePath,AreaName;
-
+    private String title, description, latitude, longitude, timestamp, filePath, AreaName;
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,7 @@ public class DisplayImages extends AppCompatActivity {
             latitude = draft.getLatitude();
             longitude = draft.getLongitude();
             timestamp = draft.getTimestamp();
-            AreaName=MySingleton.getAdress(Double.parseDouble(latitude),Double.parseDouble(longitude));
+            AreaName = MySingleton.getAdress(Double.parseDouble(latitude), Double.parseDouble(longitude));
             title = draft.getTitle();
             description = draft.getDescription();
             titleEditText.setText(title);
@@ -98,9 +99,13 @@ public class DisplayImages extends AppCompatActivity {
 
         }
         FAB_SEND_ISSUE.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
                 if (title.equals("")) {

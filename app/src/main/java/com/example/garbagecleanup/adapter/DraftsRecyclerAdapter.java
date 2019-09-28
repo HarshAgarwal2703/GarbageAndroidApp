@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,8 +29,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
 
     private Context context;
     private List<Draft> DraftList;
-    Draft draft;
-    int count = 0;
+
     private static final String TAG = "DraftsRecyclerAdapter";
 
     public DraftsRecyclerAdapter(Context context, List<Draft> draftList) {
@@ -46,14 +44,13 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.drafts_card_view, null);
         DraftsViewHolder draftsViewHolder = new DraftsViewHolder(view);
-        Log.e("jdbkkjsb", String.valueOf(count++));
         return draftsViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final DraftsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DraftsViewHolder holder, final int position) {
 
-        draft = DraftList.get(position);
+        final Draft draft = DraftList.get(position);
         Log.i(TAG, "onBindViewHolder: " + draft);
         holder.TitleTextView.setText(draft.getTitle());
         holder.DescriptionTextView.setText(draft.getDescription());
@@ -72,7 +69,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert=new AlertDialog.Builder(context);
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setMessage("ARE YOU SURE YOU WANT TO DELETE");
                 alert.setCancelable(true);
 
@@ -80,23 +77,22 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new DeleteDraft(DraftsRecyclerAdapter.this).execute(draft);
+                                new DeleteDraft(DraftsRecyclerAdapter.this).execute(position);
                                 dialog.cancel();
                             }
-                        });
-
+                        }
+                );
                 alert.setNegativeButton(
                         "No",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
-                        });
-
+                        }
+                );
                 AlertDialog alert11 = alert.create();
                 alert11.show();
                 notifyDataSetChanged();
-
             }
         });
 
@@ -109,13 +105,13 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
 
     public class DraftsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TitleTextView;
-        TextView DescriptionTextView;
-        TextView TimeStamp;
-        ImageView ImageView;
-        CardView cardView;
-        TextView AreaTextView;
-        Button btnDelete;
+        private TextView TitleTextView;
+        private TextView DescriptionTextView;
+        private TextView TimeStamp;
+        private ImageView ImageView;
+        private CardView cardView;
+        private TextView AreaTextView;
+        private Button btnDelete;
 
         public DraftsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,13 +125,12 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         }
     }
 
-    private class DeleteDraft extends AsyncTask<Draft, Void, Void> {
+    private class DeleteDraft extends AsyncTask<Integer, Void, Void> {
         private DraftsRecyclerAdapter context;
 
-
         @Override
-        protected Void doInBackground(Draft... drafts) {
-            MySingleton.getInstance().getAppDatabase().draftDAO().delete(drafts[0]);
+        protected Void doInBackground(Integer... ints) {
+            MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
             Log.d(TAG, "doInBackground: " + "inserted");
 //            Toast.makeText(context,"INSERTED TO DATABASE",Toast.LENGTH_LONG).show();
             return null;

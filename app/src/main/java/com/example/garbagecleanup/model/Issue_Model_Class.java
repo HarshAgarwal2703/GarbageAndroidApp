@@ -1,16 +1,37 @@
 package com.example.garbagecleanup.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Issue_Model_Class {
 
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("latitude")
     private String Latitude;
+    @SerializedName("longitude")
     private String Longitude;
+    @SerializedName("vote_count")
     private int votes;
+    @SerializedName("image")
     private String imageUrl;
+    @SerializedName("published_date")
     private String published_Date;
     private boolean checkLiked;
+    @SerializedName("title")
     private String title;
+    @SerializedName("Description")
     private String description;
+    @SerializedName("status")
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getTitle() {
         return title;
@@ -33,18 +54,18 @@ public class Issue_Model_Class {
     }
 
     public boolean isCheckLiked() {
-        return this.checkLiked;
+        return checkLiked;
     }
 
     public void setCheckLiked(boolean checkLiked) {
         this.checkLiked = checkLiked;
     }
 
-    public Issue_Model_Class(int id, String Latitude, String Longitude, int rating, String imageUrl, String published_Date) {
+    public Issue_Model_Class(int id, String Latitude, String Longitude, int votes, String imageUrl, String published_Date) {
         this.id = id;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
-        this.votes = rating;
+        this.votes = votes;
         this.imageUrl = imageUrl;
         this.published_Date = published_Date;
     }
@@ -85,8 +106,8 @@ public class Issue_Model_Class {
         return votes;
     }
 
-    public void setVotes(int rating) {
-        this.votes = rating;
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 
     public String getImageUrl() {
@@ -109,6 +130,7 @@ public class Issue_Model_Class {
                 ", checkLiked=" + checkLiked +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

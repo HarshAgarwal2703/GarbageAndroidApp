@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.LoginActivity;
+import com.example.garbagecleanup.activity.MyIssuesActivity;
 import com.example.garbagecleanup.activity.ViewDrafts;
 import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.helper.MySingleton;
@@ -22,9 +23,9 @@ import androidx.fragment.app.Fragment;
 
 public class TAB_3 extends Fragment {
 
-    Button VIEW_ISSUE;
+    private Button btnMyIssues;
     private Button btnLogOut;
-    Button View_drafts;
+    private Button View_drafts;
     ArrayList ISSUELIST = new ArrayList<>();
 
     public static TAB_3 newInstance() {
@@ -40,6 +41,13 @@ public class TAB_3 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab_3, container, false);
         View_drafts = view.findViewById(R.id.VIEW_BUTTON);
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        btnMyIssues = view.findViewById(R.id.btnMyIssues);
+        btnMyIssues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(MyIssuesActivity.makeIntent(getActivity()));
+            }
+        });
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
