@@ -7,6 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,28 +28,20 @@ import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.model.Issue_Model_Class;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TAB_1 extends Fragment {
 
+    private static final String TAG = "TAB_1";
     RecyclerView recyclerView;
     FeedRecyclerAdapter feedRecyclerAdapter;
     List<Issue_Model_Class> IssueList;
     SwipeRefreshLayout swipeRefreshLayout;
-
-    private static final String TAG = "TAB_1";
 
     public static TAB_1 newInstance() {
         TAB_1 fragment = new TAB_1();

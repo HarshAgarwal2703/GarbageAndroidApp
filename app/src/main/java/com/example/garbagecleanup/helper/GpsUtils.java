@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -19,15 +21,15 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import androidx.annotation.NonNull;
-
 import static android.content.ContentValues.TAG;
+
 public class GpsUtils {
     private Context context;
     private SettingsClient mSettingsClient;
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationManager locationManager;
     private LocationRequest locationRequest;
+
     public GpsUtils(Context context) {
         this.context = context;
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -43,6 +45,7 @@ public class GpsUtils {
         builder.setAlwaysShow(true); //this is the key ingredient
         //**************************
     }
+
     // method for turn on GPS
     public void turnGPSOn(final onGpsListener onGpsListener) {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -87,6 +90,7 @@ public class GpsUtils {
                     });
         }
     }
+
     public interface onGpsListener {
         void gpsStatus(boolean isGPSEnable);
     }

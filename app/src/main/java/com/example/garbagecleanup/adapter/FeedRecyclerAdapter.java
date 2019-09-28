@@ -12,6 +12,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,14 +29,10 @@ import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.Issue_Model_Class;
 
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 
 public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapter.PageViewHolder> {
 
@@ -146,12 +146,12 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
                 Log.d(TAG, "onResponse: " + response.toString());
             }
         },
-                                                                    new Response.ErrorListener() {
-                                                                        @Override
-                                                                        public void onErrorResponse(VolleyError error) {
-                                                                            Log.d(TAG, "onErrorResponse: " + error.toString());
-                                                                        }
-                                                                    }
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                    }
+                }
         );
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjectRequest);
@@ -173,12 +173,12 @@ public class FeedRecyclerAdapter extends RecyclerView.Adapter<FeedRecyclerAdapte
                 Log.d(TAG, "onResponse: " + response.toString());
             }
         },
-                                                                    new Response.ErrorListener() {
-                                                                        @Override
-                                                                        public void onErrorResponse(VolleyError error) {
-                                                                            Log.d(TAG, "onErrorResponse: " + error.toString());
-                                                                        }
-                                                                    }
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "onErrorResponse: " + error.toString());
+                    }
+                }
         );
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjectRequest);

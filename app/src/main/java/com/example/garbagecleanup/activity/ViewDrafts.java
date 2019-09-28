@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.adapter.AutoFitGridLayoutManager;
 import com.example.garbagecleanup.adapter.DraftsRecyclerAdapter;
@@ -19,15 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class ViewDrafts extends AppCompatActivity {
 
+    private static final String TAG = "ViewDrafts";
     RecyclerView recyclerView;
     ArrayList<Draft> draftList;
     DraftsRecyclerAdapter adapter;
-    private static final String TAG = "ViewDrafts";
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, ViewDrafts.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +74,12 @@ public class ViewDrafts extends AppCompatActivity {
 
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, ViewDrafts.class);
-    }
-
     private static class GetDrafts extends AsyncTask<Void, Void, ArrayList<Draft>> {
         private Context context;
+
+        public GetDrafts(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected ArrayList<Draft> doInBackground(Void... voids) {
@@ -83,10 +87,6 @@ public class ViewDrafts extends AppCompatActivity {
             List<Draft> draftList = MySingleton.getInstance().getAppDatabase().draftDAO().getAllCurrentUserDrafts(user.getUserId());
 //            Log.d(TAG, "doInBackground: "+draftList);
             return (ArrayList) draftList;
-        }
-
-        public GetDrafts(Context context) {
-            this.context = context;
         }
     }
 

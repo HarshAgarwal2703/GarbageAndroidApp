@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
@@ -17,22 +21,22 @@ import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.Issue_Model_Class;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 
 public class MyIssuesActivity extends AppCompatActivity {
 
+    private static final String TAG = "MyIssuesActivity";
     private RecyclerView rvMyIssues;
     private MyIssuesRecyclerAdapter myIssuesRecyclerAdapter;
     private ArrayList<Issue_Model_Class> issueModelClassArrayList;
-    private static final String TAG = "MyIssuesActivity";
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MyIssuesActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +78,5 @@ public class MyIssuesActivity extends AppCompatActivity {
         });
         stringRequest.setShouldCache(false);
         MySingleton.getInstance().addToRequest(stringRequest);
-    }
-
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, MyIssuesActivity.class);
     }
 }

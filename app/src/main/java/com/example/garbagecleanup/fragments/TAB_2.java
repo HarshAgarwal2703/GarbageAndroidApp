@@ -20,6 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.DisplayImages;
 import com.example.garbagecleanup.activity.MainActivity;
@@ -37,11 +42,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -63,69 +63,10 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     private boolean isGPS = false;
 
 
-    public static TAB_2 newInstance()
-    {
+    public static TAB_2 newInstance() {
         TAB_2 fragment = new TAB_2();
         return fragment;
 
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_tab_2 , container , false);
-        surfaceView=view.findViewById(R.id.SurfaceView);
-        surfaceHolder= surfaceView.getHolder();
-        FAB_click_photo=(FloatingActionButton)view.findViewById(R.id.FAB_clickpicture);
-        FAB_click_photo.setVisibility(View.VISIBLE);
-
-
-        googleApiClient= new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(getContext());
-
-
-
-        FAB_click_photo.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View view) {
-                camera.takePicture(null,null,pictureCallback);
-                FAB_click_photo.setVisibility(View.GONE);
-
-
-
-            }
-        });
-
-        pictureCallback= new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] bytes, Camera camera) {
-                final Intent intent = new Intent(getActivity(), DisplayImages.class);
-                Bitmap bmp=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                String filePath = tempFileImage(getContext(), rotateBitmap(bmp), "image");
-                intent.putExtra("path", filePath);
-                intent.putExtra("Longitude",longitude);
-                intent.putExtra("Latitude",latitude);
-                intent.putExtra("Area Name", locationAddress);
-                intent.putExtra("CallingActivity", MainActivity.class.toString());
-                Log.i(TAG, "onPictureTaken: " + System.currentTimeMillis());
-                intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
-
-                startActivity(intent);
-                camera.release();
-
-            }
-
-        };
-
-        return view;
     }
 
     public static String tempFileImage(Context context, Bitmap bitmap, String name) {
@@ -146,14 +87,70 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         return imageFile.getAbsolutePath();
     }
 
+    @SuppressLint("RestrictedApi")
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
+        surfaceView = view.findViewById(R.id.SurfaceView);
+        surfaceHolder = surfaceView.getHolder();
+        FAB_click_photo = (FloatingActionButton) view.findViewById(R.id.FAB_clickpicture);
+        FAB_click_photo.setVisibility(View.VISIBLE);
+
+
+        googleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+
+        FAB_click_photo.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                camera.takePicture(null, null, pictureCallback);
+                FAB_click_photo.setVisibility(View.GONE);
+
+
+            }
+        });
+
+        pictureCallback = new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                final Intent intent = new Intent(getActivity(), DisplayImages.class);
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                String filePath = tempFileImage(getContext(), rotateBitmap(bmp), "image");
+                intent.putExtra("path", filePath);
+                intent.putExtra("Longitude", longitude);
+                intent.putExtra("Latitude", latitude);
+                intent.putExtra("Area Name", locationAddress);
+                intent.putExtra("CallingActivity", MainActivity.class.toString());
+                Log.i(TAG, "onPictureTaken: " + System.currentTimeMillis());
+                intent.putExtra("timestamp", String.valueOf(System.currentTimeMillis()));
+
+                startActivity(intent);
+                camera.release();
+
+            }
+
+        };
+
+        return view;
+    }
+
     private File getOutputMediaFile(int mediaTypeImage) {
-    return null;
+        return null;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
 
-        camera=Camera.open();
+        camera = Camera.open();
 
         Camera.Parameters parameters;
 
@@ -190,15 +187,14 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
         switch (requestCode) {
 
-            case AppConstants.CAMERA_REQUEST_CODE :
+            case AppConstants.CAMERA_REQUEST_CODE:
 
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     surfaceHolder.addCallback(this);
                     surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-                }else
-                    Toast.makeText(getContext(),"NEED PERMISSION",Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getContext(), "NEED PERMISSION", Toast.LENGTH_LONG).show();
                 break;
         }
     }
@@ -233,34 +229,33 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
     }
 
-    public void onStop()
-    {
-      if(googleApiClient.isConnected())
-        googleApiClient.disconnect();
-      super.onStop();
+    public void onStop() {
+        if (googleApiClient.isConnected())
+            googleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-       if(ActivityCompat.checkSelfPermission(getContext(),ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           requestPermission();
-       }else{
-           fusedLocationProviderClient.getLastLocation()
-                   .addOnSuccessListener(new OnSuccessListener<Location>() {
-                       @Override
-                       public void onSuccess(Location location) {
-                           latitude = String.valueOf(location.getLatitude());
-                           longitude = String.valueOf(location.getLongitude());
+        if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+        } else {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            latitude = String.valueOf(location.getLatitude());
+                            longitude = String.valueOf(location.getLongitude());
 
-                           locationAddress = MySingleton.getAdress(location.getLatitude(), location.getLongitude());
-                       }
-                   });
+                            locationAddress = MySingleton.getAdress(location.getLatitude(), location.getLongitude());
+                        }
+                    });
 
-       }
+        }
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(getActivity(),new String[]{ACCESS_FINE_LOCATION},AppConstants.RequestPermissionCode);
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, AppConstants.RequestPermissionCode);
     }
 
     @Override

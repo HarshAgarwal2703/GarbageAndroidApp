@@ -4,17 +4,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.helper.MySingleton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class SplashActivity extends AppCompatActivity {
 
+    private static final String TAG = "SplashActivity";
     private SharedPreferences sharedPreferences;
 
-    private static final String TAG = "SplashActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

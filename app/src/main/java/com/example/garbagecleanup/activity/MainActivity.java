@@ -4,23 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.garbagecleanup.R;
-import com.example.garbagecleanup.fragments.TAB_1;
-import com.example.garbagecleanup.fragments.TAB_2;
-import com.example.garbagecleanup.fragments.TAB_3;
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.fragments.TAB_1;
+import com.example.garbagecleanup.fragments.TAB_2;
+import com.example.garbagecleanup.fragments.TAB_3;
+import com.google.android.material.tabs.TabLayout;
+
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private FragmentPagerAdapter fragmentPagerAdapter;
     private TabLayout tabLayout;
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +83,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-    }
-
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, MainActivity.class);
     }
 }

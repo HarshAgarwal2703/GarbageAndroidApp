@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,13 +29,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
     private Button btnRegister, btnLogin;
     private EditText etEmailID, etPassword;
-    private static final String TAG = "LoginActivity";
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +122,5 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, LoginActivity.class);
     }
 }

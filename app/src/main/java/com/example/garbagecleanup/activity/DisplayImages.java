@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -50,6 +51,7 @@ public class DisplayImages extends AppCompatActivity {
 //    String longitude;
     private String title, description, latitude, longitude, timestamp, filePath, AreaName;
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
