@@ -91,7 +91,7 @@ public class TAB_1 extends Fragment {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        
+
         Log.e(TAG, "getData: " + "in getdata");
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.GET_POSTS, null, new Response.Listener<JSONArray>() {
             @Override
