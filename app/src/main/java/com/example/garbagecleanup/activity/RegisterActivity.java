@@ -1,6 +1,9 @@
 package com.example.garbagecleanup.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,8 +31,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etFirstName, etLastName, etEmailID, etPassword, etContactNumber;
@@ -37,6 +40,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -72,67 +81,73 @@ public class RegisterActivity extends AppCompatActivity {
                     etPassword.setError("Required");
                     return;
                 }
-                RegisterUser registerUser = new RegisterUser();
-                registerUser.setFirstName(etFirstName.getText().toString());
-                registerUser.setLastName(etLastName.getText().toString());
-                registerUser.setEmailId(etEmailID.getText().toString());
-                registerUser.setPhoneNumber(Integer.parseInt(etContactNumber.getText().toString()));
-                registerUser.setPassword(etPassword.getText().toString());
-                String json = gson.toJson(registerUser);
-                Log.i(TAG, "onClick: " + json);
-                try {
-                    final JSONObject object = new JSONObject(json);
-                    JsonObjectRequest jsonObjectRequest =
-                            new JsonObjectRequest(
-                                    Request.Method.POST,
-                                    AppConstants.REGISTER_USER,
-                                    object,
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            Log.i(TAG, "onResponse: " + response);
-                                            try {
-                                                if (!response.getBoolean("error")) {
-                                                    String message = response.getString("message");
-                                                    User user = new User();
-                                                    JSONObject userObj = response.getJSONObject("user");
-                                                    user.setEmailId(userObj.getString("email_id"));
-                                                    user.setLastName(userObj.getString("last_name"));
-                                                    user.setFirstName(userObj.getString("first_name"));
-                                                    user.setPhoneNumber(userObj.getInt("phone_number"));
-                                                    user.setUserId(userObj.getInt("id"));
+                if (isNetworkAvailable()) {
+                    RegisterUser registerUser = new RegisterUser();
+                    registerUser.setFirstName(etFirstName.getText().toString());
+                    registerUser.setLastName(etLastName.getText().toString());
+                    registerUser.setEmailId(etEmailID.getText().toString());
+                    registerUser.setPhoneNumber(Integer.parseInt(etContactNumber.getText().toString()));
+                    registerUser.setPassword(etPassword.getText().toString());
+                    String json = gson.toJson(registerUser);
+                    Log.i(TAG, "onClick: " + json);
+                    try {
+                        final JSONObject object = new JSONObject(json);
+                        JsonObjectRequest jsonObjectRequest =
+                                new JsonObjectRequest(
+                                        Request.Method.POST,
+                                        AppConstants.REGISTER_USER,
+                                        object,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                Log.i(TAG, "onResponse: " + response);
+                                                try {
+                                                    if (!response.getBoolean("error")) {
+                                                        String message = response.getString("message");
+                                                        User user = new User();
+                                                        JSONObject userObj = response.getJSONObject("user");
+                                                        user.setEmailId(userObj.getString("email_id"));
+                                                        user.setLastName(userObj.getString("last_name"));
+                                                        user.setFirstName(userObj.getString("first_name"));
+                                                        user.setPhoneNumber(userObj.getInt("phone_number"));
+                                                        user.setUserId(userObj.getInt("id"));
 
-                                                    SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                                                    sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
-                                                    sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
-                                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
-                                                    startActivity(MainActivity.makeIntent(RegisterActivity.this));
-                                                    finishAffinity();
-                                                } else {
-                                                    String message = response.getString("message");
-                                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                        SharedPreferences sharedPreferences = RegisterActivity.this.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                                        sharedPreferences.edit().putBoolean(AppConstants.SP_LOGGED_IN, true).commit();
+                                                        sharedPreferences.edit().putString(AppConstants.SP_GET_USER, new Gson().toJson(user)).commit();
+                                                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                        startActivity(MainActivity.makeIntent(RegisterActivity.this));
+                                                        finishAffinity();
+                                                    } else {
+                                                        String message = response.getString("message");
+                                                        Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+
                                             }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
 
+                                                Log.e(TAG, "onErrorResponse: " + error);
+
+                                            }
                                         }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
+                                );
 
-                                            Log.e(TAG, "onErrorResponse: " + error);
+                        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        MySingleton.getInstance().addToRequest(jsonObjectRequest);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(RegisterActivity.this, "No Internet Available", Toast.LENGTH_SHORT).show();
 
-                                        }
-                                    }
-                            );
-
-                    jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    MySingleton.getInstance().addToRequest(jsonObjectRequest);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
             }
         });
     }

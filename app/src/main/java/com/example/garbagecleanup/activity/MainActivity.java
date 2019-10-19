@@ -4,17 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.fragments.TAB_1;
 import com.example.garbagecleanup.fragments.TAB_2;
 import com.example.garbagecleanup.fragments.TAB_3;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import static com.example.garbagecleanup.activity.LoginActivity.PERMISSIONS;
+import static com.example.garbagecleanup.activity.LoginActivity.PERMISSION_ALL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!LoginActivity.hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
         viewPager = (ViewPager) findViewById(R.id.ViewPager);
         fragmentPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);

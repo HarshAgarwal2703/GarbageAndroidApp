@@ -13,17 +13,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.DisplayImages;
 import com.example.garbagecleanup.helper.MySingleton;
 import com.example.garbagecleanup.model.Draft;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAdapter.DraftsViewHolder> {
 
@@ -131,8 +131,9 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         @Override
         protected Void doInBackground(Integer... ints) {
             MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
-            Log.d(TAG, "doInBackground: " + "inserted");
-//            Toast.makeText(context,"INSERTED TO DATABASE",Toast.LENGTH_LONG).show();
+            context.DraftList.remove(ints[0]);
+
+            Log.d(TAG, "doInBackground: " + "deleted");
             return null;
         }
 

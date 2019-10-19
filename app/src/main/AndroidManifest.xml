@@ -31,7 +31,7 @@
           android:name="org.apache.http.legacy"
           android:required="false" />
     </application>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.camera2.full" />
     <uses-feature android:name="android.hardware.autofocus" />
     <uses-feature android:name="android.hardware.camera" />

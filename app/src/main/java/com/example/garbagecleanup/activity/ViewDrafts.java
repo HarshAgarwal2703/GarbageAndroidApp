@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.adapter.AutoFitGridLayoutManager;
 import com.example.garbagecleanup.adapter.DraftsRecyclerAdapter;
@@ -18,9 +21,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ViewDrafts extends AppCompatActivity {
 
@@ -44,11 +44,18 @@ public class ViewDrafts extends AppCompatActivity {
         draftList = new ArrayList<>();
         adapter = new DraftsRecyclerAdapter(this, draftList);
         recyclerView.setAdapter(adapter);
-        getDraftsFromDB();
 
 //        draftList=getSample();
-        adapter.notifyDataSetChanged();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        draftList.clear();
+        getDraftsFromDB();
+        adapter.notifyDataSetChanged();
     }
 
     private void getDraftsFromDB() {
