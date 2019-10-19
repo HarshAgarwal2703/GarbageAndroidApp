@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.garbagecleanup.R;
+import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.model.Issue_Model_Class;
 
 import java.util.ArrayList;
@@ -53,7 +55,15 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
         holder.tvTitle.setText(issueModelClass.getTitle());
         holder.btnUpvote.setVisibility(View.GONE);
         holder.tvStatus.setText(issueModelClass.getStatus());
-        Glide.with(context).load(issueModelClass.getImageUrl()).into(holder.ivImage);
+        holder.btnDelete.setVisibility(View.VISIBLE);
+        Glide.with(context).load(AppConstants.ServerURL + "media/" + issueModelClass.getImageUrl()).into(holder.ivImage);
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -71,6 +81,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
         private CardView cardView;
         private TextView tvStatus;
         private TextView tvNoOfVotes;
+        private Button btnDelete;
 
         public PageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +93,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
             cardView = itemView.findViewById(R.id.CardView);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvNoOfVotes = itemView.findViewById(R.id.tvNoOfVotes);
+            btnDelete = itemView.findViewById(R.id.deleteMyIssue);
         }
     }
 }

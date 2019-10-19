@@ -18,7 +18,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,10 +59,12 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     FusedLocationProviderClient fusedLocationProviderClient;
     String latitude;
     String longitude;
+    private LinearLayout llPermission;
+    //    private Button btnGrant;
+    private RelativeLayout rlTab2;
     String locationAddress;
 
     private boolean isGPS = false;
-
 
     public static TAB_2 newInstance() {
         TAB_2 fragment = new TAB_2();
@@ -69,23 +72,6 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
     }
 
-    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
-
-        File outputDir = context.getCacheDir();
-        File imageFile = new File(outputDir, name + ".jpg");
-
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
-        }
-
-        return imageFile.getAbsolutePath();
-    }
 
     @SuppressLint("RestrictedApi")
     @Nullable
@@ -94,10 +80,18 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
         View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
         surfaceView = view.findViewById(R.id.SurfaceView);
+        llPermission = view.findViewById(R.id.llPermission);
+//        btnGrant=view.findViewById(R.id.btnGrant);
+        rlTab2 = view.findViewById(R.id.rlTab2);
+//        btnGrant.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+//            }
+//        });
         surfaceHolder = surfaceView.getHolder();
         FAB_click_photo = (FloatingActionButton) view.findViewById(R.id.FAB_clickpicture);
         FAB_click_photo.setVisibility(View.VISIBLE);
-
 
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -107,14 +101,12 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
-
         FAB_click_photo.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View view) {
                 camera.takePicture(null, null, pictureCallback);
                 FAB_click_photo.setVisibility(View.GONE);
-
 
             }
         });
@@ -143,6 +135,24 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
         return view;
     }
 
+    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
+
+        File outputDir = context.getCacheDir();
+        File imageFile = new File(outputDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
+        }
+
+        return imageFile.getAbsolutePath();
+    }
+
     private File getOutputMediaFile(int mediaTypeImage) {
         return null;
     }
@@ -150,6 +160,10 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
 
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
         camera = Camera.open();
 
         Camera.Parameters parameters;
@@ -166,13 +180,7 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
             e.printStackTrace();
         }
 
-
         camera.startPreview();
-
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 
     }
 
@@ -185,28 +193,33 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
+        switch (1) {
 
-            case AppConstants.CAMERA_REQUEST_CODE:
+            case 1:
 
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    surfaceHolder.addCallback(this);
-                    surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-                } else
-                    Toast.makeText(getContext(), "NEED PERMISSION", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, AppConstants.CAMERA_REQUEST_CODE);
-        } else {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            llPermission.setVisibility(View.GONE);
+            FAB_click_photo.setVisibility(View.VISIBLE);
+
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            surfaceView.invalidate();
+
+        } else {
+            llPermission.setVisibility(View.VISIBLE);
+            FAB_click_photo.setVisibility(View.GONE);
+
         }
 
     }
@@ -230,8 +243,9 @@ public class TAB_2 extends Fragment implements SurfaceHolder.Callback, GoogleApi
     }
 
     public void onStop() {
-        if (googleApiClient.isConnected())
+        if (googleApiClient.isConnected()) {
             googleApiClient.disconnect();
+        }
         super.onStop();
     }
 

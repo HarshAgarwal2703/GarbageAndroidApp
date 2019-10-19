@@ -48,11 +48,18 @@ public class ViewDrafts extends AppCompatActivity {
         draftList = new ArrayList<>();
         adapter = new DraftsRecyclerAdapter(this, draftList);
         recyclerView.setAdapter(adapter);
-        getDraftsFromDB();
 
 //        draftList=getSample();
-        adapter.notifyDataSetChanged();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        draftList.clear();
+        getDraftsFromDB();
+        adapter.notifyDataSetChanged();
     }
 
     private void getDraftsFromDB() {

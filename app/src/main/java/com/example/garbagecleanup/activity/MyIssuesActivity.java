@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,14 +31,11 @@ import java.util.ArrayList;
 
 public class MyIssuesActivity extends AppCompatActivity {
 
-    private static final String TAG = "MyIssuesActivity";
     private RecyclerView rvMyIssues;
     private MyIssuesRecyclerAdapter myIssuesRecyclerAdapter;
     private ArrayList<Issue_Model_Class> issueModelClassArrayList;
-
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, MyIssuesActivity.class);
-    }
+    private static final String TAG = "MyIssuesActivity";
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,33 +49,45 @@ public class MyIssuesActivity extends AppCompatActivity {
         issueModelClassArrayList = new ArrayList<>();
         myIssuesRecyclerAdapter = new MyIssuesRecyclerAdapter(this, issueModelClassArrayList);
         rvMyIssues.setAdapter(myIssuesRecyclerAdapter);
+        progressBar = findViewById(R.id.progressMyIssues);
 
+        progressBar.setVisibility(View.VISIBLE);
         String uri = AppConstants.MY_ISSUES + PrefManager.getUser().getUserId() + "/";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: " + response);
-                JSONArray jsonArray = null;
+                JSONArray jsonArray1 = null;
                 try {
-                    jsonArray = new JSONArray(response);
+                    jsonArray1 = new JSONArray(response);
+                    JSONArray jsonArray = jsonArray1.getJSONArray(0);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = jsonArray.getJSONObject(i);
                         Issue_Model_Class issueModelClass = new Gson().fromJson(object.toString(), Issue_Model_Class.class);
                         Log.d(TAG, "onResponse: " + issueModelClass);
                         issueModelClassArrayList.add(issueModelClass);
+
                     }
                     myIssuesRecyclerAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progressBar.setVisibility(View.GONE);
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: " + error.getMessage());
+                progressBar.setVisibility(View.GONE);
+
             }
         });
         stringRequest.setShouldCache(false);
         MySingleton.getInstance().addToRequest(stringRequest);
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, MyIssuesActivity.class);
     }
 }

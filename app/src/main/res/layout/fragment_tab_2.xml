@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/rlTab2"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
-
-   <SurfaceView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:id="@+id/SurfaceView"/>
-
-   <com.google.android.material.floatingactionbutton.FloatingActionButton
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/FAB_clickpicture"
-       android:layout_alignParentBottom="true"
-       android:layout_centerHorizontal="true"
-       android:elevation="10dp"
-       android:layout_marginBottom="10dp"
-       android:focusable="true"
-       android:tint="@color/colorAccent"
-       android:clickable="true"
-       />
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+    
+    <SurfaceView
+        android:id="@+id/SurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <LinearLayout
+        android:id="@+id/llPermission"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFF"
+            android:text="Camera perminssion not granted. Please enable and restart app" />
+        
+        <!--        <Button-->
+        <!--            android:id="@+id/btnGrant"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Grant permission" />-->
+    </LinearLayout>
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/FAB_clickpicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:focusable="true"
+        android:tint="@color/colorAccent" />
 
 </RelativeLayout>
