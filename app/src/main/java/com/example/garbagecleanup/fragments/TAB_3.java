@@ -2,6 +2,7 @@ package com.example.garbagecleanup.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.LoginActivity;
 import com.example.garbagecleanup.activity.MyIssuesActivity;
 import com.example.garbagecleanup.activity.ViewDrafts;
+import com.example.garbagecleanup.activity.viewLikedPosts;
 import com.example.garbagecleanup.helper.AppConstants;
 import com.example.garbagecleanup.helper.MySingleton;
 
 import java.util.ArrayList;
+
+import static com.google.android.gms.plus.PlusOneDummyView.TAG;
 
 public class TAB_3 extends Fragment {
 
@@ -27,6 +31,7 @@ public class TAB_3 extends Fragment {
     private Button btnMyIssues;
     private Button btnLogOut;
     private Button View_drafts;
+    private Button btnlikedIssues;
 
     public static TAB_3 newInstance() {
         TAB_3 fragment = new TAB_3();
@@ -41,6 +46,7 @@ public class TAB_3 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab_3, container, false);
         View_drafts = view.findViewById(R.id.VIEW_BUTTON);
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        btnlikedIssues=view.findViewById(R.id.btnLikedIssues);
         btnMyIssues = view.findViewById(R.id.btnMyIssues);
         btnMyIssues.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +74,19 @@ public class TAB_3 extends Fragment {
 
             }
         });
+
+        btnlikedIssues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "onClick: " + "view liked" );
+                startActivity(viewLikedPosts.makeIntent(getContext()));
+            }
+        });
         return view;
 
     }
+
+
 
 
 }

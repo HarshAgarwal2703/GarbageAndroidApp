@@ -252,7 +252,7 @@ public class DisplayImages extends AppCompatActivity {
                     Log.e(TAG, "run: " + title1);
                     Log.e(TAG, "run: " + body);
                     Log.e(TAG, "run: " + PrefManager.getUser().getUserId());
-                    apiInterface.uploadImage(body, title1, desc, Double.parseDouble(latitude), Double.parseDouble(longitude), cre, pub, 12).execute();
+                    apiInterface.uploadImage(body, title1, desc, Double.parseDouble(latitude), Double.parseDouble(longitude), cre, pub, PrefManager.getUser().getUserId()).execute();
                     finish();
 
                 } catch (IOException e) {

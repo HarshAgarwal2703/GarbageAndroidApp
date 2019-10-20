@@ -134,7 +134,7 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         @Override
         protected Void doInBackground(Integer... ints) {
             MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
-            context.DraftList.remove(ints[0]);
+            context.DraftList.remove((int)ints[0]);
             Log.d(TAG, "doInBackground: " + "deleted");
             return null;
         }

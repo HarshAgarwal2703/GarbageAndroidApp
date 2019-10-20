@@ -21,10 +21,20 @@
       android:textAllCaps="false" />
 
     <Button
+        android:layout_marginTop="10dp"
+        android:id="@+id/btnLikedIssues"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Liked Issues"
+        android:textAllCaps="false" />
+
+    <Button
       android:layout_marginTop="70dp"
       android:id="@+id/btnLogOut"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="Log Out"
       android:textAllCaps="false" />
+
+
 </LinearLayout>
