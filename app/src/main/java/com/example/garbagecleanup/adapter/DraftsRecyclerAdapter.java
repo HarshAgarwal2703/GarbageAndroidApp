@@ -27,10 +27,9 @@ import java.util.List;
 
 public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAdapter.DraftsViewHolder> {
 
+    private static final String TAG = "DraftsRecyclerAdapter";
     private Context context;
     private List<Draft> DraftList;
-
-    private static final String TAG = "DraftsRecyclerAdapter";
 
     public DraftsRecyclerAdapter(Context context, List<Draft> draftList) {
         this.context = context;
@@ -128,11 +127,14 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
     private class DeleteDraft extends AsyncTask<Integer, Void, Void> {
         private DraftsRecyclerAdapter context;
 
+        public DeleteDraft(DraftsRecyclerAdapter context) {
+            this.context = context;
+        }
+
         @Override
         protected Void doInBackground(Integer... ints) {
             MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
             context.DraftList.remove(ints[0]);
-
             Log.d(TAG, "doInBackground: " + "deleted");
             return null;
         }
@@ -140,11 +142,8 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            DraftsRecyclerAdapter.this.notifyDataSetChanged();
-        }
-
-        public DeleteDraft(DraftsRecyclerAdapter context) {
-            this.context = context;
+            notifyDataSetChanged();
+            context.notifyDataSetChanged();
         }
     }
 

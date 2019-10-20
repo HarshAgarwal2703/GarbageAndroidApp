@@ -24,15 +24,21 @@ import java.util.concurrent.ExecutionException;
 
 public class ViewDrafts extends AppCompatActivity {
 
+    private static final String TAG = "ViewDrafts";
     RecyclerView recyclerView;
     ArrayList<Draft> draftList;
     DraftsRecyclerAdapter adapter;
-    private static final String TAG = "ViewDrafts";
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, ViewDrafts.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_drafts);
+        setTitle("Drafts");
+        setTitleColor(getColor(R.color.white));
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 //        draftList = MySingleton.getInstance(this).getAppDatabase().draftDAO().getAll();
@@ -77,12 +83,12 @@ public class ViewDrafts extends AppCompatActivity {
 
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, ViewDrafts.class);
-    }
-
     private static class GetDrafts extends AsyncTask<Void, Void, ArrayList<Draft>> {
         private Context context;
+
+        public GetDrafts(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected ArrayList<Draft> doInBackground(Void... voids) {
@@ -90,10 +96,6 @@ public class ViewDrafts extends AppCompatActivity {
             List<Draft> draftList = MySingleton.getInstance().getAppDatabase().draftDAO().getAllCurrentUserDrafts(user.getUserId());
 //            Log.d(TAG, "doInBackground: "+draftList);
             return (ArrayList) draftList;
-        }
-
-        public GetDrafts(Context context) {
-            this.context = context;
         }
     }
 

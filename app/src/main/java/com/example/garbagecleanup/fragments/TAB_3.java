@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.activity.LoginActivity;
 import com.example.garbagecleanup.activity.MyIssuesActivity;
@@ -17,16 +21,12 @@ import com.example.garbagecleanup.helper.MySingleton;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 public class TAB_3 extends Fragment {
 
+    ArrayList ISSUELIST = new ArrayList<>();
     private Button btnMyIssues;
     private Button btnLogOut;
     private Button View_drafts;
-    ArrayList ISSUELIST = new ArrayList<>();
 
     public static TAB_3 newInstance() {
         TAB_3 fragment = new TAB_3();

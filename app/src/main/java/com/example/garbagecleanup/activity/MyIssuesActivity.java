@@ -41,6 +41,9 @@ public class MyIssuesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_issues);
+        setTitle("My Issues");
+        setTitleColor(getColor(R.color.white));
+
         rvMyIssues = findViewById(R.id.rvMyIssues);
         rvMyIssues.setHasFixedSize(true);
         LinearLayoutManager linearVertical = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -63,6 +66,10 @@ public class MyIssuesActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonArray1.getJSONArray(0);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = jsonArray.getJSONObject(i);
+                        Log.e(TAG, "onResponse: " +  object.get("image"));
+                        object.put("image",AppConstants.ServerURL +"media/"+ object.get("image"));
+                        Log.e(TAG, "onResponse: " +  object.get("image"));
+
                         Issue_Model_Class issueModelClass = new Gson().fromJson(object.toString(), Issue_Model_Class.class);
                         Log.d(TAG, "onResponse: " + issueModelClass);
                         issueModelClassArrayList.add(issueModelClass);

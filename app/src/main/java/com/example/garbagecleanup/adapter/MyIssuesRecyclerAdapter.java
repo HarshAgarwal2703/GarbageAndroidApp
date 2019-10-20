@@ -8,11 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.garbagecleanup.R;
 import com.example.garbagecleanup.helper.AppConstants;
@@ -47,7 +54,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
     @Override
     public void onBindViewHolder(@NonNull PageViewHolder holder, int position) {
 
-        Issue_Model_Class issueModelClass = issueModelClassArrayList.get(position);
+        final Issue_Model_Class issueModelClass = issueModelClassArrayList.get(position);
         Log.d(TAG, "onBindViewHolder: " + issueModelClass);
         holder.tvUpvotes.setText(String.valueOf(issueModelClass.getVotes()));
         holder.tvNoOfVotes.setVisibility(View.VISIBLE);
@@ -56,12 +63,33 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
         holder.btnUpvote.setVisibility(View.GONE);
         holder.tvStatus.setText(issueModelClass.getStatus());
         holder.btnDelete.setVisibility(View.VISIBLE);
-        Glide.with(context).load(AppConstants.ServerURL + "media/" + issueModelClass.getImageUrl()).into(holder.ivImage);
+        Glide.with(context).load(issueModelClass.getImageUrl()).into(holder.ivImage);
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConstants.DELETE_POST + issueModelClass.getId() + "/", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Toast.makeText(context, "POST DELETED", Toast.LENGTH_SHORT).show();
+                        issueModelClassArrayList.remove(issueModelClass);
+                        notifyDataSetChanged();
+                    }
+                },
+                                                                new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                Log.e(TAG, "onErrorResponse: " + error.toString() );
+                            }
+                        });
+
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                stringRequest.setShouldCache(false);
+                requestQueue.add(stringRequest);
+                notifyDataSetChanged();
             }
         });
     }
