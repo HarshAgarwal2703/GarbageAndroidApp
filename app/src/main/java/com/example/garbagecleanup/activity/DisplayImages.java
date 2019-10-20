@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,7 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.JsonObjectRequest;
-import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.garbagecleanup.PrefManager;
@@ -49,7 +47,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -235,8 +232,8 @@ public class DisplayImages extends AppCompatActivity {
         final MultipartBody.Part body = MultipartBody.Part.createFormData("image", file1.getName(), requestBody);
         final RequestBody title1 = RequestBody.create(MediaType.parse("multipart/form-data"), title);
         final RequestBody desc = RequestBody.create(MediaType.parse("multipart/form-data"), description);
-        RequestBody lat = RequestBody.create(MediaType.parse("multipart/form-data"), latitude);
-        RequestBody longi = RequestBody.create(MediaType.parse("multipart/form-data"), longitude);
+//        RequestBody lat = RequestBody.create(MediaType.parse("multipart/form-data"), latitude);
+//        RequestBody longi = RequestBody.create(MediaType.parse("multipart/form-data"), longitude);
         final RequestBody cre = RequestBody.create(MediaType.parse("multipart/form-data"), timestamp);
         final RequestBody pub = RequestBody.create(MediaType.parse("multipart/form-data"), parseTime());
 //                RequestBody author = RequestBody.create(MediaType.parse("multipart/form-data"), 1);
@@ -248,7 +245,14 @@ public class DisplayImages extends AppCompatActivity {
             public void run() {
                 super.run();
                 try {
-                    apiInterface.uploadImage(body, title1, desc, Double.parseDouble(latitude), Double.parseDouble(longitude), cre, pub, 1).execute();
+                    Log.e(TAG, "run: " + latitude);
+                    Log.e(TAG, "run: " + longitude);
+                    Log.e(TAG, "run: " + pub);
+                    Log.e(TAG, "run: " + cre);
+                    Log.e(TAG, "run: " + title1);
+                    Log.e(TAG, "run: " + body);
+                    Log.e(TAG, "run: " + PrefManager.getUser().getUserId());
+                    apiInterface.uploadImage(body, title1, desc, Double.parseDouble(latitude), Double.parseDouble(longitude), cre, pub, 12).execute();
                     finish();
 
                 } catch (IOException e) {

@@ -37,6 +37,8 @@ public class ViewDrafts extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_drafts);
+        setTitle("Drafts");
+        setTitleColor(getColor(R.color.white));
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 //        draftList = MySingleton.getInstance(this).getAppDatabase().draftDAO().getAll();

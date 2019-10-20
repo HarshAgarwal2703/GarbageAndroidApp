@@ -125,7 +125,7 @@ public class TAB_1 extends Fragment {
         Button btnCancel = layout.findViewById(R.id.dialogButtonCancel);
         textViewFilter = layout.findViewById(R.id.FilterTextView);
 
-        seekBar.setMax(10);
+        seekBar.setMax(1000);
         seekBar.setProgress(5);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -251,11 +251,12 @@ public class TAB_1 extends Fragment {
                         }
                     }
 
-                    String Url = String.format(AppConstants.UPVOTE_LIST, PrefManager.getUser().getUserId());
+                    String Url = String.format(AppConstants.UPVOTE_LIST + PrefManager.getUser().getUserId() + "/", PrefManager.getUser().getUserId());
                     final ArrayList<Integer> postArrayList = new ArrayList<>();
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Log.d(TAG, "onResponse: " + response);
                             try {
                                 JSONArray t = new JSONArray(response);
                                 for (int i = 0; i < t.length(); i++) {

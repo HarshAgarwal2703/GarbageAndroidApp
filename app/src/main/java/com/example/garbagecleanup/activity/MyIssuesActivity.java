@@ -41,6 +41,9 @@ public class MyIssuesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_issues);
+        setTitle("My Issues");
+        setTitleColor(getColor(R.color.white));
+
         rvMyIssues = findViewById(R.id.rvMyIssues);
         rvMyIssues.setHasFixedSize(true);
         LinearLayoutManager linearVertical = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

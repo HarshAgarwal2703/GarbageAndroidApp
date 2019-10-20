@@ -69,7 +69,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
             @Override
             public void onClick(View view) {
 
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConstants.DELETE_POST + issueModelClass.getId() + "/remove/", new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, AppConstants.DELETE_POST + issueModelClass.getId() + "/", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
@@ -78,7 +78,7 @@ public class MyIssuesRecyclerAdapter extends RecyclerView.Adapter<MyIssuesRecycl
                         notifyDataSetChanged();
                     }
                 },
-                        new Response.ErrorListener() {
+                                                                new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
 
