@@ -31,6 +31,9 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etFirstName, etLastName, etEmailID, etPassword, etContactNumber;
@@ -85,8 +88,22 @@ public class RegisterActivity extends AppCompatActivity {
                     RegisterUser registerUser = new RegisterUser();
                     registerUser.setFirstName(etFirstName.getText().toString());
                     registerUser.setLastName(etLastName.getText().toString());
-                    registerUser.setEmailId(etEmailID.getText().toString());
-                    registerUser.setPhoneNumber(Integer.parseInt(etContactNumber.getText().toString()));
+                    final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+
+                    Pattern pattern = Pattern.compile(EMAIL_REGEX);
+                    Matcher matcher = pattern.matcher(etEmailID.getText().toString());
+
+                    if(matcher.matches()){
+                        registerUser.setEmailId(etEmailID.getText().toString());
+                    }else{
+                        Toast.makeText(RegisterActivity.this, "INVALID EMAIL", Toast.LENGTH_SHORT).show();
+                    }
+                    try{
+                        registerUser.setPhoneNumber(Integer.parseInt(etContactNumber.getText().toString()));
+                    }
+                    catch (Exception e){
+                        Toast.makeText(RegisterActivity.this, "INVALID NUMBER", Toast.LENGTH_SHORT).show();
+                    }
                     registerUser.setPassword(etPassword.getText().toString());
                     String json = gson.toJson(registerUser);
                     Log.i(TAG, "onClick: " + json);

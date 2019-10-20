@@ -63,6 +63,10 @@ public class MyIssuesActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonArray1.getJSONArray(0);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = jsonArray.getJSONObject(i);
+                        Log.e(TAG, "onResponse: " +  object.get("image"));
+                        object.put("image",AppConstants.ServerURL +"media/"+ object.get("image"));
+                        Log.e(TAG, "onResponse: " +  object.get("image"));
+
                         Issue_Model_Class issueModelClass = new Gson().fromJson(object.toString(), Issue_Model_Class.class);
                         Log.d(TAG, "onResponse: " + issueModelClass);
                         issueModelClassArrayList.add(issueModelClass);

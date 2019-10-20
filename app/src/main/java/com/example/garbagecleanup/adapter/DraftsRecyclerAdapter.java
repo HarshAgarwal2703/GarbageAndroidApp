@@ -135,7 +135,6 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         protected Void doInBackground(Integer... ints) {
             MySingleton.getInstance().getAppDatabase().draftDAO().delete(context.DraftList.get(ints[0]));
             context.DraftList.remove(ints[0]);
-
             Log.d(TAG, "doInBackground: " + "deleted");
             return null;
         }
@@ -143,7 +142,8 @@ public class DraftsRecyclerAdapter extends RecyclerView.Adapter<DraftsRecyclerAd
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            DraftsRecyclerAdapter.this.notifyDataSetChanged();
+            notifyDataSetChanged();
+            context.notifyDataSetChanged();
         }
     }
 

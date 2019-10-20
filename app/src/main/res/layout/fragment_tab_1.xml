@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  android:orientation="vertical">
-    
+    android:orientation="vertical">
+
     <ProgressBar
         android:id="@+id/progressTab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
+        android:layout_gravity="center"
         android:minWidth="50dp"
-        android:layout_gravity="center" />
-    
+        android:minHeight="50dp" />
+
+
     <TextView
         android:id="@+id/tvNoInternet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No Internet"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="No Internet" />
+
+    <ImageButton
+        android:id="@+id/FilterButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:background="@drawable/filter_png_icon"
+        android:padding="40dp"
+        android:layout_marginRight="20dp"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/SwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-      android:id="@+id/SwipeRefresh">
-    
-    
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/FilterButton"-->
-        <!--            android:layout_width="20dp"-->
-        <!--            android:layout_height="20dp"-->
-        <!--            android:layout_alignParentRight="true"-->
-        <!--            android:padding="20dp"-->
-        <!--            android:background="@drawable/filter_png_icon"/>-->
+        android:layout_height="match_parent">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerTab1"
             android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          tools:listitem="@layout/issues_card_view" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/issues_card_view" />
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

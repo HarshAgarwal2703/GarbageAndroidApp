@@ -16,8 +16,10 @@ public class AppConstants {
     public static final String GET_POSTS = ServerURL + "postAPI/";
     public static final String MY_ISSUES = ServerURL + "getuserspost/";
     public static final String UPVOTE_POST = ServerURL + "upvote/";
+    public static final String DELETE_POST = ServerURL + "post/";
     public static final String DOWNVOTE_POST = ServerURL + "downvote/";
     public static final String UPVOTE_LIST = ServerURL + "upvotelist?uid=%1$s";
+    public static final String FILTER_POST = ServerURL + "filterpost/";
 
 
 }
