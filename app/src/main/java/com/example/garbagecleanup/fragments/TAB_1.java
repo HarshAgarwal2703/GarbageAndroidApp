@@ -125,7 +125,7 @@ public class TAB_1 extends Fragment {
         Button btnCancel = layout.findViewById(R.id.dialogButtonCancel);
         textViewFilter = layout.findViewById(R.id.FilterTextView);
 
-        seekBar.setMax(1000);
+        seekBar.setMax(100);
         seekBar.setProgress(5);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
