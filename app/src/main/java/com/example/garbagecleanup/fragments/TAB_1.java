@@ -183,37 +183,37 @@ public class TAB_1 extends Fragment {
         super.onResume();
     }
 
-    public void getObjectArray() {
+        public void getObjectArray() {
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
-        fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
 
-                        TAB_1.this.latitude = location.getLatitude();
-                        TAB_1.this.longitude = location.getLongitude();
+                            TAB_1.this.latitude = location.getLatitude();
+                            TAB_1.this.longitude = location.getLongitude();
 
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("latitude", latitude);
-                            jsonObject.put("longitude", longitude);
-                            jsonObject.put("radius", radius);
+                            JSONObject jsonObject = new JSONObject();
+                            try {
+                                jsonObject.put("latitude", latitude);
+                                jsonObject.put("longitude", longitude);
+                                jsonObject.put("radius", radius);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            JSONArray jsonArray = new JSONArray();
+                            jsonArray.put(jsonObject);
+                            getData(jsonArray);
+
+
                         }
+                    });
 
-                        JSONArray jsonArray = new JSONArray();
-                        jsonArray.put(jsonObject);
-                        getData(jsonArray);
-
-
-                    }
-                });
-
-    }
+        }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
